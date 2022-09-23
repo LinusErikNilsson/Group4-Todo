@@ -9,7 +9,6 @@ type Props = NativeStackScreenProps<RootStackParamList, "Details">;
 export default function DetailsScreen({ navigation, route } : Props) {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
       <Text> Details Screen {route.params.id} 🔧</Text>
       <StatusBar style="auto" />
       <Button  title="Gå till detaljsidan igen" onPress={() => navigation.push("Details", { id: route.params.id +1, path: route.params.path + "/" + route.name})} />
