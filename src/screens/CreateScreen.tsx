@@ -1,11 +1,17 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { View, Text, StyleSheet } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { RootStackParamList } from "../App";
 
-export default function HomeScreen() {
+type Props = NativeStackScreenProps<RootStackParamList, "Create">;
+
+export default function CreateScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text>Home Screen 🏡 </Text>
+      <Text> Create screen 🔨</Text>
       <StatusBar style="auto" />
+      <Button title="Gå tillbaka" onPress={() => navigation.goBack()} />
+      <Button title="Gå hem" onPress={() => navigation.navigate("Home")} />
     </View>
   );
 }
