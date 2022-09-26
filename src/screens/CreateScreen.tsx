@@ -10,7 +10,7 @@ function CreateScreen() {
   return (
     <View>
       <Text>Create Screen</Text>
-      <TodoForm handleSubmit={handleSubmit} />
+      <TodoForm onSubmit={handleSubmit} />
     </View>
   );
 }

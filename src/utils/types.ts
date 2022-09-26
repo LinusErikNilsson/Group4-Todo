@@ -1,3 +1,5 @@
+import { ImageSourcePropType } from "react-native";
+
 interface Coordinates {
   lat: number;
   lng: number;
@@ -12,9 +14,11 @@ interface Todo {
   alertTime?: Date;
   dueDate: Date;
   alertOnLocation?: boolean;
-  picture?: string;
+  picture: ImageSourcePropType;
   status: "pending" | "completed";
   priority: "low" | "medium" | "high";
 }
 
-export type { Coordinates, Todo };
+type TodoFormValues = Omit<Todo, "id">;
+
+export type { Coordinates, Todo, TodoFormValues };

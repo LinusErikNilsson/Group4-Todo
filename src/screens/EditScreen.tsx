@@ -10,7 +10,7 @@ function EditScreen() {
   return (
     <View>
       <Text>Edit Screen</Text>
-      <TodoForm handleSubmit={handleSubmit} />
+      <TodoForm onSubmit={handleSubmit} />
     </View>
   );
 }

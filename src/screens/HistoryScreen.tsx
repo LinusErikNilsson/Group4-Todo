@@ -5,7 +5,7 @@ import { RootStackParamList } from "../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "History">;
 
-export default function HistoryScreen({ navigation, route }: Props) {
+export default function HistoryScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text> History Screen 📖</Text>
