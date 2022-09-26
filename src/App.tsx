@@ -7,14 +7,16 @@ import EditScreen from "./screens/EditScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import MapScreen from "./screens/MapScreen";
+import { LocationInfo } from "./utils/types";
 
 export type RootStackParamList = {
   Home: undefined;
   Details: { id: number; path?: string };
-  Create: undefined;
-  Edit: undefined;
+  Create: { location?: LocationInfo };
+  Edit: { location?: LocationInfo };
   History: undefined;
   Map: undefined;
+  Form: undefined;
 };
 
 const NativeStack = createNativeStackNavigator<RootStackParamList>();

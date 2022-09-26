@@ -1,4 +1,11 @@
-import { Formik } from "formik";
+/* eslint-disable @typescript-eslint/no-empty-function */
+import {
+  DateTimePickerAndroid,
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Formik, useFormik } from "formik";
 import React from "react";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 import {
@@ -9,20 +16,33 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
-import { DatePickerInput } from "react-native-paper-dates";
 import * as Yup from "yup";
-import { Todo, TodoFormValues } from "../utils/types";
+import { RootStackParamList } from "../App";
+import { LocationInfo, Todo, TodoFormValues } from "../utils/types";
 
 interface Props {
   onSubmit: (values: TodoFormValues) => void;
   todo?: Todo;
+  location?: LocationInfo;
 }
 
-function TodoForm({ onSubmit, todo }: Props) {
+function TodoForm({ onSubmit, todo, location }: Props) {
+  const navigate =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  // const getGeoLocation = async (coordinates: LatLng) => {
+  //   console.log(coordinates);
+  //   const loc = await Location.reverseGeocodeAsync(coordinates, {
+  //     useGoogleMaps: true,
+  //   });
+  //   return loc[0].street;
+  // };
+
   const initialValues: TodoFormValues = todo || {
     title: "",
     description: "",
-    coordinates: undefined,
+    coordinates: location?.coordinates,
+    location: location?.address,
     dueDate: new Date(),
     alertTime: undefined,
     alertOnLocation: false,
@@ -33,17 +53,38 @@ function TodoForm({ onSubmit, todo }: Props) {
 
   const schema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
-    description: Yup.string().required("Description is required"),
+    description: Yup.string(),
     coordinates: Yup.object().shape({
-      lat: Yup.number().required("Latitude is required"),
-      lng: Yup.number().required("Longitude is required"),
+      lat: Yup.number(),
+      lng: Yup.number(),
     }),
     dueDate: Yup.date().required("Due date is required"),
-    alertTime: Yup.date().required("Alert time is required"),
-    alertOnLocation: Yup.boolean().required("Alert on location is required"),
+    alertTime: Yup.date(),
+    alertOnLocation: Yup.boolean(),
     picture: Yup.string().required("Picture is required"),
     status: Yup.string().required("Status is required"),
     priority: Yup.string().required("Priority is required"),
+  });
+
+  const dateTimePicker = (
+    startValue: Date,
+    mode: "date" | "time",
+    handleChange: (event: DateTimePickerEvent, date?: Date) => void
+  ) => {
+    DateTimePickerAndroid.open({
+      value: startValue,
+      mode,
+      onChange: handleChange,
+    });
+  };
+
+  const formik = useFormik<TodoFormValues>({
+    initialValues,
+    validationSchema: schema,
+    onSubmit: (values) => {
+      onSubmit(values);
+      navigate.goBack();
+    },
   });
 
   return (
@@ -123,19 +164,30 @@ function TodoForm({ onSubmit, todo }: Props) {
                 <View>
                   <Text style={styles.text}>Due date:</Text>
                   <Text style={styles.smallText}>
-                    {values.dueDate.toDateString()}
+                    {new Date(values.dueDate).toLocaleDateString()}
                   </Text>
                   <Text style={styles.smallText}>
-                    {values.dueDate.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    {values.dueDate.getHours() +
+                      ":" +
+                      values.dueDate.getMinutes()}
                   </Text>
                 </View>
                 <Button
                   mode="contained"
                   onPress={() => {
-                    setFieldValue("dueDate", new Date());
+                    dateTimePicker(values.dueDate, "date", (event, date) => {
+                      if (event.type === "set") {
+                        setFieldValue("dueDate", date);
+
+                        if (date) {
+                          dateTimePicker(new Date(date), "time", (e, time) => {
+                            if (e.type === "set") {
+                              setFieldValue("dueDate", time);
+                            }
+                          });
+                        }
+                      }
+                    });
                   }}
                   style={{ alignSelf: "flex-end" }}
                 >
@@ -152,17 +204,22 @@ function TodoForm({ onSubmit, todo }: Props) {
                 >
                   <View>
                     <Text style={styles.text}>Alert time</Text>
-                    <Text style={styles.smallText}>
-                      {values.alertTime
-                        ? values.alertTime.toDateString()
-                        : "None"}
-                    </Text>
-                    <Text style={styles.smallText}>
-                      {values.alertTime?.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </Text>
+                    {values.alertTime ? (
+                      <>
+                        <Text style={styles.smallText}>
+                          {values.alertTime
+                            ? values.alertTime.toDateString()
+                            : "None"}
+                        </Text>
+                        <Text style={styles.smallText}>
+                          {values.alertTime.getHours() +
+                            ":" +
+                            values.alertTime.getMinutes()}
+                        </Text>
+                      </>
+                    ) : (
+                      <Text style={styles.smallText}>No Alert</Text>
+                    )}
                   </View>
                   {values.alertTime && (
                     <IconButton
@@ -181,11 +238,23 @@ function TodoForm({ onSubmit, todo }: Props) {
                 <Button
                   mode="contained"
                   onPress={() => {
-                    // eslint-disable-next-line no-unused-expressions
-                    setFieldValue("alertTime", new Date());
+                    dateTimePicker(values.dueDate, "date", (event, date) => {
+                      if (event.type === "set") {
+                        setFieldValue("alertTime", date);
+
+                        if (date) {
+                          dateTimePicker(new Date(date), "time", (e, time) => {
+                            if (e.type === "set") {
+                              setFieldValue("alertTime", time);
+                            }
+                          });
+                        }
+                      }
+                    });
                   }}
+                  style={{ alignSelf: "flex-end" }}
                 >
-                  Set Time
+                  Set Alert
                 </Button>
               </View>
             </View>
@@ -196,16 +265,12 @@ function TodoForm({ onSubmit, todo }: Props) {
                 <Text style={styles.text}>
                   {values.location ? values.location : "No location"}
                 </Text>
-                <DatePickerInput
-                  label="Due date"
-                  value={values.dueDate}
-                  onChange={(date) => setFieldValue("dueDate", date)}
-                  locale="en-GB"
-                  inputMode="start"
-                />
+
                 <Button
                   mode="contained"
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigate.navigate("Map");
+                  }}
                   style={{ marginLeft: "auto" }}
                 >
                   Set Location
@@ -250,7 +315,7 @@ function TodoForm({ onSubmit, todo }: Props) {
               </View>
             </View>
 
-            <Button onPress={() => handleSubmit}>Submit</Button>
+            <Button onPress={handleSubmit}>Submit</Button>
           </View>
         )}
       </Formik>

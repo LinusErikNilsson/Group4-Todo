@@ -1,15 +1,16 @@
 import { ImageSourcePropType } from "react-native";
+import { LatLng } from "react-native-maps";
 
-interface Coordinates {
-  lat: number;
-  lng: number;
+interface LocationInfo {
+  coordinates: LatLng;
+  address?: string;
 }
 
 interface Todo {
   id: number;
   title: string;
   description: string;
-  coordinates?: Coordinates;
+  coordinates?: LatLng;
   location?: string;
   alertTime?: Date;
   dueDate: Date;
@@ -21,4 +22,4 @@ interface Todo {
 
 type TodoFormValues = Omit<Todo, "id">;
 
-export type { Coordinates, Todo, TodoFormValues };
+export type { Todo, TodoFormValues, LocationInfo };

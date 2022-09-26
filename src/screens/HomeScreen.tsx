@@ -16,14 +16,21 @@ export default function HomeScreen({ navigation }: Props) {
       />
       <Button
         title="CreateScreen"
-        onPress={() => navigation.navigate("Create")}
+        onPress={() => navigation.navigate("Create", { location: undefined })}
       />
-      <Button title="EditScreen" onPress={() => navigation.navigate("Edit")} />
+      <Button
+        title="EditScreen"
+        onPress={() => navigation.navigate("Edit", { location: undefined })}
+      />
       <Button
         title="HistoryScreen"
         onPress={() => navigation.navigate("History")}
       />
-      <Button title="MapScreen" onPress={() => navigation.navigate("Map")} />
+      <Button
+        title="MapScreen"
+        // eslint-disable-next-line no-console
+        onPress={() => navigation.navigate("Map")}
+      />
     </View>
   );
 }
