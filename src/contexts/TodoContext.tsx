@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createContext,
   ReactNode,
@@ -6,6 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import data from "../utils/mockdata";
 import { Todo } from "../utils/types";
 
@@ -33,7 +33,7 @@ interface Props {
   children: ReactNode;
 }
 
-function CartProvider({ children }: Props) {
+function TodoProvider({ children }: Props) {
   const [todoItems, setTodoItems] = useState<Todo[]>(() => {
     AsyncStorage.getItem("TodoItems").then((value) => {
       if (value) {
@@ -44,15 +44,15 @@ function CartProvider({ children }: Props) {
     return data;
   });
 
-  const generateTodoItemId = (): number => {
+  /* const generateTodoItemId = (): number => {
     const id = Math.max(...todoItems.map((item) => item.id), 0) + 1;
     return id;
-  };
+  }; */
 
-  //change this when we get data from forms
   const addTodo = (todo: Todo) => {
     const newTodoItems = [...todoItems];
-    /* const newTodoItem = {
+    /* Change this when we get data from formik
+    const newTodoItem = {
       ...todo,
       id: generateTodoItemId(),
     }; */
@@ -91,4 +91,4 @@ function CartProvider({ children }: Props) {
 
 export const useTodo = () => useContext(TodoContext);
 
-export default CartProvider;
+export default TodoProvider;
