@@ -1,6 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Router } from "express";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { RootStackParamList } from "../../App";
 
