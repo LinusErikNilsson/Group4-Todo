@@ -40,6 +40,8 @@
     "react/prop-types": 0,
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
-    "react/style-prop-object": 0
+    "react/style-prop-object": 0,
+    "react/react-in-jsx-scope": 0,
+    "prefer-template": 0
   }
 }
