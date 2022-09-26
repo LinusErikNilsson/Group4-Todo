@@ -1,25 +1,31 @@
-import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button, Provider as PaperProvider } from "react-native-paper";
+import DetailsScreen from "./src/screens/DetailsScreen";
+import HomeScreen from "./src/screens/HomeScreen";
+
+export type RootStackParamList = {
+  Home: undefined;
+  Details: { id: number; path?: string };
+};
+
+const NativeStack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <PaperProvider>
-      <View style={styles.container}>
-        <Text>Open up App.tsx to start working on your app!</Text>
-        <Button icon="camera">Press me</Button>
-        <StatusBar style="auto" />
-      </View>
-    </PaperProvider>
+    <NavigationContainer>
+      <NativeStack.Navigator>
+        <NativeStack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: "Home" }}
+        />
+        <NativeStack.Screen
+          name="Details"
+          component={DetailsScreen}
+          options={{ title: "Details" }}
+        />
+      </NativeStack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
