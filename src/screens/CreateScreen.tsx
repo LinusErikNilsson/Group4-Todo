@@ -1,11 +1,11 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { View, Text, StyleSheet, Button } from "react-native";
-import { RootStackParamList } from "../../App";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { RootStackParamList } from "../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Create">;
 
-export default function CreateScreen({ navigation, route }: Props) {
+export default function CreateScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text> Create screen 🔨</Text>

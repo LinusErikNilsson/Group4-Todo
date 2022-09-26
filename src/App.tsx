@@ -1,12 +1,12 @@
-import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./src/screens/HomeScreen";
-import DetailsScreen from "./src/screens/DetailsScreen";
-import CreateScreen from "./src/screens/CreateScreen";
-import EditScreen from "./src/screens/EditScreen";
-import HistoryScreen from "./src/screens/HistoryScreen";
-import MapScreen from "./src/screens/MapScreen";
+import React from "react";
+import CreateScreen from "./screens/CreateScreen";
+import DetailsScreen from "./screens/DetailsScreen";
+import EditScreen from "./screens/EditScreen";
+import HistoryScreen from "./screens/HistoryScreen";
+import HomeScreen from "./screens/HomeScreen";
+import MapScreen from "./screens/MapScreen";
 
 export type RootStackParamList = {
   Home: undefined;
