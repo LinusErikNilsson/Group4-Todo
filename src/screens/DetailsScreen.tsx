@@ -6,13 +6,21 @@ import { RootStackParamList } from "../../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Details">;
 
-export default function DetailsScreen({ navigation, route } : Props) {
+export default function DetailsScreen({ navigation, route }: Props) {
   return (
     <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
       <Text> Details Screen {route.params.id} 🔧</Text>
       <StatusBar style="auto" />
-      <Button  title="Gå till detaljsidan igen" onPress={() => navigation.push("Details", { id: route.params.id +1, path: route.params.path + "/" + route.name})} />
+      <Button
+        title="Gå till detaljsidan igen"
+        onPress={() =>
+          navigation.push("Details", {
+            id: route.params.id + 1,
+            path: route.params.path + "/" + route.name,
+          })
+        }
+      />
       <Button title="Gå tillbaka" onPress={() => navigation.goBack()} />
       <Button title="Gå hem" onPress={() => navigation.navigate("Home")} />
     </View>
@@ -22,8 +30,8 @@ export default function DetailsScreen({ navigation, route } : Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
