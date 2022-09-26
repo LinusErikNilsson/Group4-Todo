@@ -6,7 +6,7 @@ import { RootStackParamList } from "../../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Create">;
 
-export default function CreateScreen({ navigation, route } : Props) {
+export default function CreateScreen({ navigation, route }: Props) {
   return (
     <View style={styles.container}>
       <Text> Create screen 🔨</Text>

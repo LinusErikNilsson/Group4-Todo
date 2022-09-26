@@ -6,7 +6,7 @@ import { RootStackParamList } from "../../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Edit">;
 
-export default function EditScreen({ navigation, route } : Props) {
+export default function EditScreen({ navigation, route }: Props) {
   return (
     <View style={styles.container}>
       <Text> Edit screen🔧</Text>
@@ -20,8 +20,8 @@ export default function EditScreen({ navigation, route } : Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
