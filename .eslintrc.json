@@ -42,6 +42,8 @@
     "@typescript-eslint/no-shadow": ["error"],
     "react/style-prop-object": 0,
     "react/react-in-jsx-scope": 0,
-    "prefer-template": 0
+    "prefer-template": 0,
+    "react/jsx-no-constructed-context-values": 0,
+    "consistent-return": "off"
   }
 }
