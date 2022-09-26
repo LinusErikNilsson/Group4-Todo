@@ -31,7 +31,5 @@ export default function App() {
         <NativeStack.Screen name="Map" component={MapScreen} options={{ title:"Map"}} />
       </NativeStack.Navigator>
     </NavigationContainer>
-
-)};
-
-
+  );
+}
