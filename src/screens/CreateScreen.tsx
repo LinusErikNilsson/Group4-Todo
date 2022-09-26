@@ -1,20 +1,18 @@
-import { StatusBar } from "expo-status-bar";
-import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import { Text, View } from "react-native";
+import TodoForm from "../components/TodoForm";
 
-export default function HomeScreen() {
+function CreateScreen() {
+  const handleSubmit = (values: any) => {
+    console.log(values);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Home Screen 🏡 </Text>
-      <StatusBar style="auto" />
+    <View>
+      <Text>Create Screen</Text>
+      <TodoForm handleSubmit={handleSubmit} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+export default CreateScreen;
