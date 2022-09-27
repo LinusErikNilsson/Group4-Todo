@@ -10,7 +10,7 @@ import MapScreen from "./screens/MapScreen";
 
 export type RootStackParamList = {
   Home: undefined;
-  Details: { id: number; path?: string };
+  Details: { id: number };
   Create: undefined;
   Edit: undefined;
   History: undefined;

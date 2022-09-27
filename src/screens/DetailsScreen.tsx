@@ -53,6 +53,11 @@ export default function DetailsScreen({ route }: Props) {
       </View>
     );
   }
+  return (
+    <View>
+      <Text> 404</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
