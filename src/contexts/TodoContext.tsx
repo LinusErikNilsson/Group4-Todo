@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import data from "../utils/mockdata";
 import { Todo } from "../utils/types";
 
@@ -34,15 +34,24 @@ interface Props {
 }
 
 function TodoProvider({ children }: Props) {
-  const [todoItems, setTodoItems] = useState<Todo[]>(() => {
-    AsyncStorage.getItem("TodoItems").then((value) => {
-      if (value) {
-        return JSON.parse(value);
-      }
-    });
+  const [todoItems, setTodoItems] = useState<Todo[]>(data);
 
-    return data;
-  });
+  useEffect(() => {
+    const readItemFromStorage = async () => {
+      const result = await SecureStore.getItemAsync("TodoItems");
+      if (result) {
+        setTodoItems(JSON.parse(result));
+      }
+    };
+    readItemFromStorage();
+  }, []);
+
+  useEffect(() => {
+    const writeItemToStorage = async (newValue: Todo[]) => {
+      await SecureStore.setItemAsync("TodoItems", JSON.stringify(newValue));
+    };
+    writeItemToStorage(todoItems);
+  }, [todoItems]);
 
   /* const generateTodoItemId = (): number => {
     const id = Math.max(...todoItems.map((item) => item.id), 0) + 1;
@@ -70,10 +79,6 @@ function TodoProvider({ children }: Props) {
       prevState.map((t) => (t.id === todo.id ? todo : t))
     );
   };
-
-  useEffect(() => {
-    AsyncStorage.setItem("TodoItems", JSON.stringify(todoItems));
-  }, [todoItems]);
 
   return (
     <TodoContext.Provider
