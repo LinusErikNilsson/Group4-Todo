@@ -12,7 +12,7 @@ export default function HomeScreen({ navigation }: Props) {
       <StatusBar style="auto" />
       <Button
         title="DetailsScreen"
-        onPress={() => navigation.navigate("Details", { id: 2, path: "/" })}
+        onPress={() => navigation.navigate("Details", { id: 2 })}
       />
       <Button
         title="CreateScreen"
