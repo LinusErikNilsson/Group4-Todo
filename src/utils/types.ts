@@ -3,7 +3,7 @@ import { LatLng } from "react-native-maps";
 
 interface LocationInfo {
   coordinates: LatLng;
-  address?: string;
+  location?: string;
 }
 
 interface Todo {

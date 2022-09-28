@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import CameraScreen from "./screens/CameraScreen";
 import CreateScreen from "./screens/CreateScreen";
 import DetailsScreen from "./screens/DetailsScreen";
 import EditScreen from "./screens/EditScreen";
@@ -12,11 +13,12 @@ import { LocationInfo } from "./utils/types";
 export type RootStackParamList = {
   Home: undefined;
   Details: { id: number; path?: string };
-  Create: { location?: LocationInfo };
-  Edit: { location?: LocationInfo };
+  Create: { location?: LocationInfo; picture?: string };
+  Edit: { location?: LocationInfo; picture?: string };
   History: undefined;
   Map: undefined;
   Form: undefined;
+  Camera: undefined;
 };
 
 const NativeStack = createNativeStackNavigator<RootStackParamList>();
@@ -54,6 +56,11 @@ export default function App() {
           name="Map"
           component={MapScreen}
           options={{ title: "Map" }}
+        />
+        <NativeStack.Screen
+          name="Camera"
+          component={CameraScreen}
+          options={{ title: "Camera" }}
         />
       </NativeStack.Navigator>
     </NavigationContainer>

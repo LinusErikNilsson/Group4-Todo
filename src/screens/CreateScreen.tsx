@@ -14,7 +14,11 @@ function CreateScreen({ navigation, route }: Props) {
   return (
     <View>
       <Text>Create Screen</Text>
-      <TodoForm onSubmit={handleSubmit} location={route.params.location} />
+      <TodoForm
+        onSubmit={handleSubmit}
+        location={route.params.location}
+        picture={route.params.picture}
+      />
     </View>
   );
 }

@@ -16,7 +16,7 @@ export default function MapScreen({ navigation }: Props) {
     });
     return {
       coordinates,
-      location,
+      location: location[0].street ? location[0].street : "Unknown",
     };
   };
 
@@ -28,6 +28,12 @@ export default function MapScreen({ navigation }: Props) {
           navigation.navigate("Create", {
             location: await getLocation(e.nativeEvent.coordinate),
           });
+        }}
+        initialRegion={{
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
         }}
       />
     </View>

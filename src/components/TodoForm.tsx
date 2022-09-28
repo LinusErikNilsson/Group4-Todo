@@ -5,8 +5,9 @@ import {
 } from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Formik, useFormik } from "formik";
-import React from "react";
+import * as ImagePicker from "expo-image-picker";
+import { useFormik } from "formik";
+import React, { useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 import {
   Button,
@@ -24,25 +25,18 @@ interface Props {
   onSubmit: (values: TodoFormValues) => void;
   todo?: Todo;
   location?: LocationInfo;
+  picture?: string;
 }
 
-function TodoForm({ onSubmit, todo, location }: Props) {
+function TodoForm({ onSubmit, todo, location, picture }: Props) {
   const navigate =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
-  // const getGeoLocation = async (coordinates: LatLng) => {
-  //   console.log(coordinates);
-  //   const loc = await Location.reverseGeocodeAsync(coordinates, {
-  //     useGoogleMaps: true,
-  //   });
-  //   return loc[0].street;
-  // };
 
   const initialValues: TodoFormValues = todo || {
     title: "",
     description: "",
-    coordinates: location?.coordinates,
-    location: location?.address,
+    coordinates: undefined,
+    location: undefined,
     dueDate: new Date(),
     alertTime: undefined,
     alertOnLocation: false,
@@ -58,6 +52,7 @@ function TodoForm({ onSubmit, todo, location }: Props) {
       lat: Yup.number(),
       lng: Yup.number(),
     }),
+    location: Yup.string(),
     dueDate: Yup.date().required("Due date is required"),
     alertTime: Yup.date(),
     alertOnLocation: Yup.boolean(),
@@ -87,238 +82,263 @@ function TodoForm({ onSubmit, todo, location }: Props) {
     },
   });
 
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      formik.setFieldValue("picture", result);
+    }
+  };
+
+  useEffect(() => {
+    if (location) {
+      formik.setFieldValue("coordinates", location.coordinates);
+      formik.setFieldValue("location", location.location);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
+
+  useEffect(() => {
+    if (picture) {
+      formik.setFieldValue("picture", picture);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [picture]);
+
   return (
     <ScrollView>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={schema}
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          setFieldValue,
-        }) => (
-          <View style={styles.container}>
-            <View style={styles.topContainer}>
-              <Text style={styles.title}>
-                {values.title ? values.title : "New Todo"}
+      <View style={styles.container}>
+        <View style={styles.topContainer}>
+          <Text style={styles.title}>
+            {formik.values.title ? formik.values.title : "New Todo"}
+          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 20 }}>Priority: </Text>
+            <Button
+              mode="contained"
+              onPress={() => {
+                // eslint-disable-next-line no-unused-expressions
+                formik.values.priority === "low"
+                  ? formik.handleChange("priority")("medium")
+                  : formik.values.priority === "medium"
+                  ? formik.handleChange("priority")("high")
+                  : formik.handleChange("priority")("low");
+              }}
+              buttonColor={
+                formik.values.priority === "low"
+                  ? "green"
+                  : formik.values.priority === "medium"
+                  ? "orange"
+                  : "red"
+              }
+            >
+              {formik.values.priority}
+            </Button>
+          </View>
+        </View>
+        <Button mode="contained" onPress={() => console.log(formik.values)}>
+          log values
+        </Button>
+        <TextInput
+          label="Title"
+          onChangeText={formik.handleChange("title")}
+          onBlur={formik.handleBlur("title")}
+          value={formik.values.title}
+          error={Boolean(formik.touched.title && formik.errors.title)}
+          mode="outlined"
+        />
+        {formik.touched.title && formik.errors.title && (
+          <HelperText type="error">{formik.errors.title}</HelperText>
+        )}
+
+        <TextInput
+          label="Description"
+          onChangeText={formik.handleChange("description")}
+          onBlur={formik.handleBlur("description")}
+          value={formik.values.description}
+          error={Boolean(
+            formik.touched.description && formik.errors.description
+          )}
+          multiline
+          mode="outlined"
+          style={styles.input}
+        />
+        {formik.touched.description && formik.errors.description && (
+          <HelperText type="error">{formik.errors.description}</HelperText>
+        )}
+
+        <View style={styles.section}>
+          <Text style={styles.title}>Date</Text>
+          <View style={styles.horizontal}>
+            <View>
+              <Text style={styles.text}>Due date:</Text>
+              <Text style={styles.smallText}>
+                {new Date(formik.values.dueDate).toLocaleDateString()}
               </Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={{ fontSize: 20 }}>Priority: </Text>
-                <Button
-                  mode="contained"
-                  onPress={() => {
-                    // eslint-disable-next-line no-unused-expressions
-                    values.priority === "low"
-                      ? handleChange("priority")("medium")
-                      : values.priority === "medium"
-                      ? handleChange("priority")("high")
-                      : handleChange("priority")("low");
-                  }}
-                  buttonColor={
-                    values.priority === "low"
-                      ? "green"
-                      : values.priority === "medium"
-                      ? "orange"
-                      : "red"
+              <Text style={styles.smallText}>
+                {formik.values.dueDate.getHours() +
+                  ":" +
+                  formik.values.dueDate.getMinutes()}
+              </Text>
+            </View>
+            <Button
+              mode="contained"
+              onPress={() => {
+                dateTimePicker(formik.values.dueDate, "date", (event, date) => {
+                  if (event.type === "set") {
+                    formik.setFieldValue("dueDate", date);
+
+                    if (date) {
+                      dateTimePicker(new Date(date), "time", (e, time) => {
+                        if (e.type === "set") {
+                          formik.setFieldValue("dueDate", time);
+                        }
+                      });
+                    }
                   }
-                >
-                  {values.priority}
-                </Button>
+                });
+              }}
+              style={{ alignSelf: "flex-end" }}
+            >
+              Set Date
+            </Button>
+          </View>
+          <View style={{ ...styles.horizontal, marginTop: 20 }}>
+            <View
+              style={{
+                ...styles.horizontal,
+                width: "70%",
+                justifyContent: "flex-start",
+              }}
+            >
+              <View>
+                <Text style={styles.text}>Alert time</Text>
+                {formik.values.alertTime ? (
+                  <>
+                    <Text style={styles.smallText}>
+                      {formik.values.alertTime
+                        ? formik.values.alertTime.toDateString()
+                        : "None"}
+                    </Text>
+                    <Text style={styles.smallText}>
+                      {formik.values.alertTime.getHours() +
+                        ":" +
+                        formik.values.alertTime.getMinutes()}
+                    </Text>
+                  </>
+                ) : (
+                  <Text style={styles.smallText}>No Alert</Text>
+                )}
               </View>
-            </View>
-            <TextInput
-              label="Title"
-              onChangeText={handleChange("title")}
-              onBlur={handleBlur("title")}
-              value={values.title}
-              error={Boolean(touched.title && errors.title)}
-              mode="outlined"
-            />
-            {touched.title && errors.title && (
-              <HelperText type="error">{errors.title}</HelperText>
-            )}
-
-            <TextInput
-              label="Description"
-              onChangeText={handleChange("description")}
-              onBlur={handleBlur("description")}
-              value={values.description}
-              error={Boolean(touched.description && errors.description)}
-              multiline
-              mode="outlined"
-              style={styles.input}
-            />
-            {touched.description && errors.description && (
-              <HelperText type="error">{errors.description}</HelperText>
-            )}
-
-            <View style={styles.section}>
-              <Text style={styles.title}>Date</Text>
-              <View style={styles.horizontal}>
-                <View>
-                  <Text style={styles.text}>Due date:</Text>
-                  <Text style={styles.smallText}>
-                    {new Date(values.dueDate).toLocaleDateString()}
-                  </Text>
-                  <Text style={styles.smallText}>
-                    {values.dueDate.getHours() +
-                      ":" +
-                      values.dueDate.getMinutes()}
-                  </Text>
-                </View>
-                <Button
-                  mode="contained"
-                  onPress={() => {
-                    dateTimePicker(values.dueDate, "date", (event, date) => {
-                      if (event.type === "set") {
-                        setFieldValue("dueDate", date);
-
-                        if (date) {
-                          dateTimePicker(new Date(date), "time", (e, time) => {
-                            if (e.type === "set") {
-                              setFieldValue("dueDate", time);
-                            }
-                          });
-                        }
-                      }
-                    });
-                  }}
-                  style={{ alignSelf: "flex-end" }}
-                >
-                  Set Date
-                </Button>
-              </View>
-              <View style={{ ...styles.horizontal, marginTop: 20 }}>
-                <View
+              {formik.values.alertTime && (
+                <IconButton
+                  icon="close"
+                  size={20}
                   style={{
-                    ...styles.horizontal,
-                    width: "70%",
-                    justifyContent: "flex-start",
+                    alignSelf: "flex-end",
+                    marginBottom: 12,
                   }}
-                >
-                  <View>
-                    <Text style={styles.text}>Alert time</Text>
-                    {values.alertTime ? (
-                      <>
-                        <Text style={styles.smallText}>
-                          {values.alertTime
-                            ? values.alertTime.toDateString()
-                            : "None"}
-                        </Text>
-                        <Text style={styles.smallText}>
-                          {values.alertTime.getHours() +
-                            ":" +
-                            values.alertTime.getMinutes()}
-                        </Text>
-                      </>
-                    ) : (
-                      <Text style={styles.smallText}>No Alert</Text>
-                    )}
-                  </View>
-                  {values.alertTime && (
-                    <IconButton
-                      icon="close"
-                      size={20}
-                      style={{
-                        alignSelf: "flex-end",
-                        marginBottom: 12,
-                      }}
-                      onPress={() => {
-                        setFieldValue("alertTime", undefined);
-                      }}
-                    />
-                  )}
-                </View>
-                <Button
-                  mode="contained"
                   onPress={() => {
-                    dateTimePicker(values.dueDate, "date", (event, date) => {
-                      if (event.type === "set") {
-                        setFieldValue("alertTime", date);
-
-                        if (date) {
-                          dateTimePicker(new Date(date), "time", (e, time) => {
-                            if (e.type === "set") {
-                              setFieldValue("alertTime", time);
-                            }
-                          });
-                        }
-                      }
-                    });
+                    formik.setFieldValue("alertTime", undefined);
                   }}
-                  style={{ alignSelf: "flex-end" }}
-                >
-                  Set Alert
-                </Button>
-              </View>
-            </View>
-
-            <View style={styles.section}>
-              <Text style={styles.header}>Location</Text>
-              <View style={styles.horizontal}>
-                <Text style={styles.text}>
-                  {values.location ? values.location : "No location"}
-                </Text>
-
-                <Button
-                  mode="contained"
-                  onPress={() => {
-                    navigate.navigate("Map");
-                  }}
-                  style={{ marginLeft: "auto" }}
-                >
-                  Set Location
-                </Button>
-              </View>
-              <View style={styles.horizontal}>
-                <Text style={styles.text}>Alert on location: </Text>
-                <Switch
-                  value={values.alertOnLocation}
-                  onValueChange={(e) => setFieldValue("alertOnLocation", e)}
-                  disabled={!values.coordinates}
                 />
-              </View>
+              )}
             </View>
+            <Button
+              mode="contained"
+              onPress={() => {
+                dateTimePicker(formik.values.dueDate, "date", (event, date) => {
+                  if (event.type === "set") {
+                    formik.setFieldValue("alertTime", date);
 
-            <View style={{ alignItems: "center" }}>
-              <Text style={styles.header}>Image</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "100%",
+                    if (date) {
+                      dateTimePicker(new Date(date), "time", (e, time) => {
+                        if (e.type === "set") {
+                          formik.setFieldValue("alertTime", time);
+                        }
+                      });
+                    }
+                  }
+                });
+              }}
+              style={{ alignSelf: "flex-end" }}
+            >
+              Set Alert
+            </Button>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.header}>Location</Text>
+          <View style={styles.horizontal}>
+            <Text style={styles.text}>
+              {formik.values.location ? formik.values.location : "No location"}
+            </Text>
+
+            <Button
+              mode="contained"
+              onPress={() => {
+                navigate.navigate("Map");
+              }}
+              style={{ marginLeft: "auto" }}
+            >
+              Set Location
+            </Button>
+          </View>
+          <View style={styles.horizontal}>
+            <Text style={styles.text}>Alert on location: </Text>
+            <Switch
+              value={formik.values.alertOnLocation}
+              onValueChange={(e) => {
+                formik.setFieldValue("alertOnLocation", e);
+              }}
+              disabled={!formik.values.coordinates}
+            />
+          </View>
+        </View>
+
+        <View style={{ alignItems: "center" }}>
+          <Text style={styles.header}>Image</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Image
+              // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
+              source={formik.values.picture}
+              style={{ width: 200, height: 200 }}
+            />
+            <View style={{ justifyContent: "space-around" }}>
+              <Button
+                mode="contained"
+                onPress={pickImage}
+                style={{ marginBottom: 10 }}
+              >
+                Select Image
+              </Button>
+              <Button
+                mode="contained"
+                onPress={() => {
+                  navigate.navigate("Camera");
                 }}
               >
-                <Image
-                  source={values.picture}
-                  style={{ width: 200, height: 200 }}
-                />
-                <View style={{ justifyContent: "space-around" }}>
-                  <Button
-                    mode="contained"
-                    onPress={() => {}}
-                    style={{ marginBottom: 10 }}
-                  >
-                    Select Image
-                  </Button>
-                  <Button mode="contained" onPress={() => {}}>
-                    Take Picture
-                  </Button>
-                </View>
-              </View>
+                Take Picture
+              </Button>
             </View>
-
-            <Button onPress={handleSubmit}>Submit</Button>
           </View>
-        )}
-      </Formik>
+        </View>
+
+        <Button onPress={formik.handleSubmit}>Submit</Button>
+      </View>
     </ScrollView>
   );
 }

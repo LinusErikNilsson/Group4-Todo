@@ -16,11 +16,21 @@ export default function HomeScreen({ navigation }: Props) {
       />
       <Button
         title="CreateScreen"
-        onPress={() => navigation.navigate("Create", { location: undefined })}
+        onPress={() =>
+          navigation.navigate("Create", {
+            location: undefined,
+            picture: undefined,
+          })
+        }
       />
       <Button
         title="EditScreen"
-        onPress={() => navigation.navigate("Edit", { location: undefined })}
+        onPress={() =>
+          navigation.navigate("Edit", {
+            location: undefined,
+            picture: undefined,
+          })
+        }
       />
       <Button
         title="HistoryScreen"
