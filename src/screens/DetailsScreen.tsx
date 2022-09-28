@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StyleSheet, View } from "react-native";
-import { Button, Text, ToggleButton } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
 
@@ -11,27 +11,33 @@ export default function DetailsScreen({ route }: Props) {
   const todoData = todoItems.find((t) => t.id === route.params.id);
   if (todoData) {
     todoData.dueDate = new Date(todoData.dueDate);
+    if (todoData.alertTime) {
+      todoData.alertTime = new Date(todoData.alertTime);
+    }
     return (
       <View style={styles.container}>
-        <View style={styles.containerItem}>
-          <Text variant="headlineSmall">
-            {" "}
-            {todoData.title} {todoData.status}
-          </Text>
-          <ToggleButton
-            icon="check"
+        <View style={styles.containerItemColumnAlignCenter}>
+          <Text variant="headlineLarge">{todoData.title}</Text>
+          <Text variant="bodyLarge">{todoData.priority} Priority</Text>
+        </View>
+        <View style={styles.containerItemColumnAlignCenter}>
+          <Button
+            mode="contained"
+            icon={todoData.status === "completed" ? "check" : "close"}
+            buttonColor={todoData.status === "completed" ? "green" : "red"}
             onPress={() => {
               todoData.status =
                 todoData.status === "completed" ? "pending" : "completed";
               updateTodo(todoData);
             }}
-          />
-        </View>
-        <View style={styles.containerItem}>
-          <Text variant="headlineSmall"> Priority: {todoData.priority} </Text>
+          >
+            Status: {todoData.status}
+          </Button>
           <Button
+            style={styles.buttonStyling}
             mode="contained"
             icon="trash-can-outline"
+            buttonColor="red"
             onPress={() => {
               removeTodo(todoData.id);
             }}
@@ -39,17 +45,52 @@ export default function DetailsScreen({ route }: Props) {
             Remove todo
           </Button>
         </View>
-        <View>
-          <Text variant="headlineSmall">
+        <View style={styles.containerItemColumn}>
+          <Text variant="bodyMedium" style={styles.boldText}>
+            Description
+          </Text>
+          <Text variant="bodyLarge">{todoData.description} </Text>
+        </View>
+        <View style={styles.containerItemColumn}>
+          <Text variant="bodyMedium" style={styles.boldText}>
+            Dates and times
+          </Text>
+          <Text variant="bodyLarge">
             Due date: {todoData.dueDate.toDateString()}
           </Text>
+          {todoData.alertTime ? (
+            <Text variant="bodyLarge">
+              alert date: {todoData.alertTime.toDateString()}
+            </Text>
+          ) : (
+            <Text variant="bodyLarge">No alert time set.</Text>
+          )}
         </View>
-        <View style={styles.containerItem}>
-          <Text variant="headlineSmall"> {todoData.description} </Text>
-        </View>
-        <View style={styles.containerItem}>
-          <Text variant="headlineSmall"> bleh </Text>
-        </View>
+        {todoData.location ? (
+          <View style={styles.containerItemColumn}>
+            <Text variant="bodyMedium" style={styles.boldText}>
+              Location
+            </Text>
+            <Text variant="bodyLarge">Adress: {todoData.location}</Text>
+            {todoData.alertOnLocation ? (
+              <Text variant="bodyLarge">Will alert on location</Text>
+            ) : (
+              <Text variant="bodyLarge">Will not alert on location</Text>
+            )}
+          </View>
+        ) : (
+          <View />
+        )}
+        {todoData.picture ? (
+          <View style={[styles.containerItemColumn]}>
+            <Text variant="bodyMedium" style={styles.boldText}>
+              Images
+            </Text>
+            <Text variant="bodyLarge">put image here</Text>
+          </View>
+        ) : (
+          <View />
+        )}
       </View>
     );
   }
@@ -65,13 +106,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
   },
-  containerItem: {
-    flex: 1,
+  containerItemRow: {
     flexDirection: "row",
-    backgroundColor: "#fff",
+    width: "80%",
+    justifyContent: "space-between",
+  },
+  containerItemColumn: {
+    width: "80%",
+    justifyContent: "space-between",
+  },
+  containerItemColumnAlignCenter: {
+    width: "80%",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
+  },
+  boldText: {
+    fontWeight: "bold",
+  },
+  buttonStyling: {
+    margin: 10,
   },
 });
