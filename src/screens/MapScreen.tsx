@@ -1,13 +1,15 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import MapView, { LatLng } from "react-native-maps";
 import { RootStackParamList } from "../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Map">;
 
 export default function MapScreen({ navigation, route }: Props) {
+  const [permission, setPermission] = useState(false);
+
   const getLocation = async (coordinates: LatLng) => {
     const { latitude, longitude } = coordinates;
     const location = await Location.reverseGeocodeAsync({
@@ -19,6 +21,28 @@ export default function MapScreen({ navigation, route }: Props) {
       location: location[0].street ? location[0].street : "Unknown",
     };
   };
+
+  useEffect(() => {
+    const getPermission = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        setPermission(true);
+      }
+    };
+    getPermission();
+  }, []);
+
+  if (
+    (!permission && route.params.returnPath === "Edit") ||
+    route.params.returnPath === "Create"
+  ) {
+    return (
+      <View style={styles.container}>
+        <Text>Permission not granted</Text>
+        <Text>Please edit Location Permissions to use this feature</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
