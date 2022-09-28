@@ -26,24 +26,31 @@ interface Props {
   todo?: Todo;
   location?: LocationInfo;
   picture?: string;
+  returnPath: string;
 }
 
-function TodoForm({ onSubmit, todo, location, picture }: Props) {
+function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
   const navigate =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const initialValues: TodoFormValues = todo || {
-    title: "",
-    description: "",
-    coordinates: undefined,
-    location: undefined,
-    dueDate: new Date(),
-    alertTime: undefined,
-    alertOnLocation: false,
-    picture: require("../assets/placeholder.png"),
-    status: "pending",
-    priority: "medium",
-  };
+  const initialValues: TodoFormValues = todo
+    ? {
+        ...todo,
+        dueDate: new Date(todo.dueDate),
+        alertTime: todo.alertTime ? new Date(todo.alertTime) : undefined,
+      }
+    : {
+        title: "",
+        description: "",
+        coordinates: undefined,
+        location: undefined,
+        dueDate: new Date(),
+        alertTime: undefined,
+        alertOnLocation: false,
+        imageUri: undefined,
+        status: "pending",
+        priority: "medium",
+      };
 
   const schema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
@@ -56,7 +63,7 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
     dueDate: Yup.date().required("Due date is required"),
     alertTime: Yup.date(),
     alertOnLocation: Yup.boolean(),
-    picture: Yup.string().required("Picture is required"),
+    imageUri: Yup.string().required("Picture is required"),
     status: Yup.string().required("Status is required"),
     priority: Yup.string().required("Priority is required"),
   });
@@ -78,7 +85,6 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
     validationSchema: schema,
     onSubmit: (values) => {
       onSubmit(values);
-      navigate.goBack();
     },
   });
 
@@ -91,7 +97,7 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
     });
 
     if (!result.cancelled) {
-      formik.setFieldValue("picture", result);
+      formik.setFieldValue("imageUri", result.uri);
     }
   };
 
@@ -105,7 +111,7 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
 
   useEffect(() => {
     if (picture) {
-      formik.setFieldValue("picture", picture);
+      formik.setFieldValue("imageUri", picture);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [picture]);
@@ -141,9 +147,6 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
             </Button>
           </View>
         </View>
-        <Button mode="contained" onPress={() => console.log(formik.values)}>
-          log values
-        </Button>
         <TextInput
           label="Title"
           onChangeText={formik.handleChange("title")}
@@ -283,7 +286,7 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
             <Button
               mode="contained"
               onPress={() => {
-                navigate.navigate("Map");
+                navigate.navigate("Map", { returnPath });
               }}
               style={{ marginLeft: "auto" }}
             >
@@ -313,8 +316,13 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
             }}
           >
             <Image
-              // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-              source={formik.values.picture}
+              source={
+                formik.values.imageUri
+                  ? {
+                      uri: formik.values.imageUri,
+                    }
+                  : require("../assets/placeholder.png")
+              }
               style={{ width: 200, height: 200 }}
             />
             <View style={{ justifyContent: "space-around" }}>
@@ -328,7 +336,7 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
               <Button
                 mode="contained"
                 onPress={() => {
-                  navigate.navigate("Camera");
+                  navigate.navigate("Camera", { returnPath });
                 }}
               >
                 Take Picture
@@ -337,7 +345,16 @@ function TodoForm({ onSubmit, todo, location, picture }: Props) {
           </View>
         </View>
 
-        <Button onPress={formik.handleSubmit}>Submit</Button>
+        <Button
+          onPress={formik.handleSubmit}
+          mode="contained"
+          style={{
+            marginTop: 20,
+            marginBottom: 20,
+          }}
+        >
+          Submit
+        </Button>
       </View>
     </ScrollView>
   );

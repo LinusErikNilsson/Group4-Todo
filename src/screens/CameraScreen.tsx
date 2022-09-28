@@ -9,7 +9,7 @@ import { RootStackParamList } from "../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Camera">;
 
-export default function CameraScreen({ navigation }: Props) {
+export default function CameraScreen({ navigation, route }: Props) {
   const [type, setType] = useState(CameraType.back);
   const [cameraPermission, setCameraPermission] = useState<boolean>();
   const [photo, setPhoto] = useState<CameraCapturedPicture>();
@@ -63,10 +63,13 @@ export default function CameraScreen({ navigation }: Props) {
 
       setPhoto(undefined);
 
-      navigation.navigate("Create", {
-        location: undefined,
-        picture: uri.uri,
-      });
+      navigation.navigate(
+        route.params.returnPath === "Edit" ? "Edit" : "Create",
+        {
+          location: undefined,
+          picture: uri.uri,
+        }
+      );
     };
 
     const newPhoto = () => {

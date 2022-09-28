@@ -12,13 +12,12 @@ import { LocationInfo } from "./utils/types";
 
 export type RootStackParamList = {
   Home: undefined;
-  Details: { id: number; path?: string };
   Create: { location?: LocationInfo; picture?: string };
-  Edit: { location?: LocationInfo; picture?: string };
+  Edit: { location?: LocationInfo; picture?: string; id?: number };
+  Details: { id: number };
   History: undefined;
-  Map: undefined;
-  Form: undefined;
-  Camera: undefined;
+  Map: { returnPath: string };
+  Camera: { returnPath: string };
 };
 
 const NativeStack = createNativeStackNavigator<RootStackParamList>();

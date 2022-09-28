@@ -3,12 +3,20 @@ import React from "react";
 import { Text, View } from "react-native";
 import { RootStackParamList } from "../App";
 import TodoForm from "../components/TodoForm";
+import { useTodo } from "../contexts/TodoContext";
+import { TodoFormValues } from "../utils/types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Create">;
 
 function CreateScreen({ navigation, route }: Props) {
-  const handleSubmit = (values: any) => {
-    console.log(values);
+  const { addTodo } = useTodo();
+
+  const handleSubmit = (values: TodoFormValues) => {
+    addTodo({
+      ...values,
+      id: Math.floor(Math.random() * 1000),
+    });
+    navigation.navigate("Home");
   };
 
   return (
@@ -18,6 +26,7 @@ function CreateScreen({ navigation, route }: Props) {
         onSubmit={handleSubmit}
         location={route.params.location}
         picture={route.params.picture}
+        returnPath="Create"
       />
     </View>
   );

@@ -1,4 +1,3 @@
-import { ImageSourcePropType } from "react-native";
 import { LatLng } from "react-native-maps";
 
 interface LocationInfo {
@@ -15,7 +14,7 @@ interface Todo {
   alertTime?: Date;
   dueDate: Date;
   alertOnLocation?: boolean;
-  picture: ImageSourcePropType;
+  imageUri?: string;
   status: "pending" | "completed";
   priority: "low" | "medium" | "high";
 }

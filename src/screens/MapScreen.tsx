@@ -7,7 +7,7 @@ import { RootStackParamList } from "../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Map">;
 
-export default function MapScreen({ navigation }: Props) {
+export default function MapScreen({ navigation, route }: Props) {
   const getLocation = async (coordinates: LatLng) => {
     const { latitude, longitude } = coordinates;
     const location = await Location.reverseGeocodeAsync({
@@ -25,9 +25,12 @@ export default function MapScreen({ navigation }: Props) {
       <MapView
         style={styles.map}
         onDoublePress={async (e) => {
-          navigation.navigate("Create", {
-            location: await getLocation(e.nativeEvent.coordinate),
-          });
+          navigation.navigate(
+            route.params.returnPath === "Edit" ? "Edit" : "Create",
+            {
+              location: await getLocation(e.nativeEvent.coordinate),
+            }
+          );
         }}
         initialRegion={{
           latitude: 37.78825,
