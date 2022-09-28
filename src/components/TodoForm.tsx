@@ -68,6 +68,10 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
     priority: Yup.string().required("Priority is required"),
   });
 
+  const addZero = (time: number) => {
+    return time < 10 ? `0${time}` : time;
+  };
+
   const dateTimePicker = (
     startValue: Date,
     mode: "date" | "time",
@@ -181,7 +185,7 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
             <View>
               <Text style={styles.text}>Due date:</Text>
               <Text style={styles.smallText}>
-                {new Date(formik.values.dueDate).toLocaleDateString()}
+                {new Date(formik.values.dueDate).toDateString()}
               </Text>
               <Text style={styles.smallText}>
                 {formik.values.dueDate.getHours() +
@@ -229,9 +233,9 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
                         : "None"}
                     </Text>
                     <Text style={styles.smallText}>
-                      {formik.values.alertTime.getHours() +
+                      {addZero(formik.values.alertTime.getHours()) +
                         ":" +
-                        formik.values.alertTime.getMinutes()}
+                        addZero(formik.values.alertTime.getMinutes())}
                     </Text>
                   </>
                 ) : (
@@ -279,7 +283,7 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
         <View style={styles.section}>
           <Text style={styles.header}>Location</Text>
           <View style={styles.horizontal}>
-            <Text style={styles.text}>
+            <Text style={{ ...styles.text, flex: 1 }}>
               {formik.values.location ? formik.values.location : "No location"}
             </Text>
 
@@ -376,6 +380,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    flex: 1,
   },
   input: {
     marginTop: 5,
