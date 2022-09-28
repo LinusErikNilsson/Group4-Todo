@@ -79,13 +79,15 @@ export default function CameraScreen({ navigation, route }: Props) {
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.camera} source={{ uri: photo.uri }} />
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={newPhoto} style={styles.button}>
-            <Text style={styles.previewText}>New</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={savePhoto} style={styles.button}>
-            <Text style={styles.previewText}>Save</Text>
-          </TouchableOpacity>
+        <View style={styles.camera}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={newPhoto} style={styles.button}>
+              <Text style={styles.previewText}>New</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={savePhoto} style={styles.button}>
+              <Text style={styles.previewText}>Save</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
     );
@@ -125,16 +127,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 20,
-    width: "100%",
   },
   text: {
     fontSize: 18,
     color: "white",
   },
   button: {
-    flex: 0.1,
+    // alignItems: "center",
     alignSelf: "flex-end",
-    alignItems: "center",
   },
   preview: {
     flex: 1,
