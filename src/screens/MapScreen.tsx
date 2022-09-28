@@ -33,8 +33,8 @@ export default function MapScreen({ navigation, route }: Props) {
   }, []);
 
   if (
-    (!permission && route.params.returnPath === "Edit") ||
-    route.params.returnPath === "Create"
+    !permission &&
+    (route.params.returnPath === "Edit" || route.params.returnPath === "Create")
   ) {
     return (
       <View style={styles.container}>

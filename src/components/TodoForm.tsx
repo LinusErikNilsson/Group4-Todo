@@ -63,7 +63,7 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
     dueDate: Yup.date().required("Due date is required"),
     alertTime: Yup.date(),
     alertOnLocation: Yup.boolean(),
-    imageUri: Yup.string().required("Picture is required"),
+    imageUri: Yup.string(),
     status: Yup.string().required("Status is required"),
     priority: Yup.string().required("Priority is required"),
   });

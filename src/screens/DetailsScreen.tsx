@@ -1,12 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StyleSheet, View } from "react-native";
+import { Alert, Image, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Details">;
 
-export default function DetailsScreen({ route }: Props) {
+export default function DetailsScreen({ route, navigation }: Props) {
   const { todoItems, updateTodo, removeTodo } = useTodo();
   const todoData = todoItems.find((t) => t.id === route.params.id);
   if (todoData) {
@@ -19,6 +19,14 @@ export default function DetailsScreen({ route }: Props) {
         <View style={styles.containerItemColumnAlignCenter}>
           <Text variant="headlineLarge">{todoData.title}</Text>
           <Text variant="bodyLarge">{todoData.priority} Priority</Text>
+          {todoData.imageUri ? (
+            <Image
+              source={{ uri: todoData.imageUri }}
+              style={{ width: 200, height: 200 }}
+            />
+          ) : (
+            <View />
+          )}
         </View>
         <View style={styles.containerItemColumnAlignCenter}>
           <Button
@@ -39,7 +47,22 @@ export default function DetailsScreen({ route }: Props) {
             icon="trash-can-outline"
             buttonColor="red"
             onPress={() => {
-              removeTodo(todoData.id);
+              return Alert.alert(
+                "Remove",
+                "Are you sure you want to remove this todo?",
+                [
+                  {
+                    text: "Yes",
+                    onPress: () => {
+                      removeTodo(todoData.id);
+                      navigation.goBack();
+                    },
+                  },
+                  {
+                    text: "No",
+                  },
+                ]
+              );
             }}
           >
             Remove todo
@@ -77,16 +100,6 @@ export default function DetailsScreen({ route }: Props) {
             ) : (
               <Text variant="bodyLarge">Will not alert on location</Text>
             )}
-          </View>
-        ) : (
-          <View />
-        )}
-        {todoData.picture ? (
-          <View style={[styles.containerItemColumn]}>
-            <Text variant="bodyMedium" style={styles.boldText}>
-              Images
-            </Text>
-            <Text variant="bodyLarge">put image here</Text>
           </View>
         ) : (
           <View />
