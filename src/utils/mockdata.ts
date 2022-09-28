@@ -17,8 +17,8 @@ const data: Todo[] = [
     description: "Buy milk from the store",
     dueDate: getRandomDate(today, nextWeek),
     coordinates: {
-      lat: 57.7106,
-      lng: 12.9423,
+      latitude: 57.7106,
+      longitude: 12.9423,
     },
     location: "Trandögatan 20, 504 33 Borås, Sweden",
     alertTime: new Date(),
@@ -39,8 +39,8 @@ const data: Todo[] = [
     description: "Buy bread from the store",
     dueDate: getRandomDate(today, nextWeek),
     coordinates: {
-      lat: 57.7106,
-      lng: 12.9423,
+      latitude: 57.7106,
+      longitude: 12.9423,
     },
     location: "Trandögatan 20, 504 33 Borås, Sweden",
     status: "pending",
@@ -52,8 +52,8 @@ const data: Todo[] = [
     description: "Buy cheese from the store",
     dueDate: getRandomDate(today, nextWeek),
     coordinates: {
-      lat: 57.7387,
-      lng: 12.9326,
+      latitude: 57.7387,
+      longitude: 12.9326,
     },
     location: "Kolonigatan 1, 506 40 Borås, Sweden",
     alertOnLocation: true,
@@ -66,8 +66,8 @@ const data: Todo[] = [
     description: "Buy butter from the store",
     dueDate: getRandomDate(today, nextWeek),
     coordinates: {
-      lat: 57.7106,
-      lng: 12.9423,
+      latitude: 57.7106,
+      longitude: 12.9423,
     },
     location: "Trandögatan 20, 504 33 Borås, Sweden",
     status: "pending",
