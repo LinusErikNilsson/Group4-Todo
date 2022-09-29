@@ -36,11 +36,11 @@ export default function DetailsScreen({ route, navigation }: Props) {
         <View style={styles.containerItemColumnAlignCenter}>
           <Button
             mode="contained"
-            icon={todoData.status === "completed" ? "check" : "alert-circle"}
-            buttonColor={todoData.status === "completed" ? "green" : "red"}
+            icon={todoData.status === "Completed" ? "check" : "alert-circle"}
+            buttonColor={todoData.status === "Completed" ? "green" : "red"}
             onPress={() => {
               todoData.status =
-                todoData.status === "completed" ? "pending" : "completed";
+                todoData.status === "Completed" ? "Pending" : "Completed";
               updateTodo(todoData);
             }}
           >
