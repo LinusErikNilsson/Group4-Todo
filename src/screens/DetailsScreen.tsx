@@ -15,10 +15,6 @@ export default function DetailsScreen({ route, navigation }: Props) {
   }, [navigation, todoData?.title]);
 
   if (todoData) {
-    todoData.dueDate = new Date(todoData.dueDate);
-    if (todoData.alertTime) {
-      todoData.alertTime = new Date(todoData.alertTime);
-    }
     return (
       <View style={styles.container}>
         <View style={styles.containerItemColumnAlignCenter}>
@@ -84,11 +80,15 @@ export default function DetailsScreen({ route, navigation }: Props) {
             Dates and times
           </Text>
           <Text variant="bodyLarge">
-            Due date: {todoData.dueDate.toDateString()}
+            Due date:{" "}
+            {todoData.dueDate.toLocaleString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </Text>
           {todoData.alertTime ? (
             <Text variant="bodyLarge">
-              alert date: {todoData.alertTime.toDateString()}
+              alert date: {todoData.alertTime.toTimeString()}
             </Text>
           ) : (
             <Text variant="bodyLarge">No alert time set.</Text>
