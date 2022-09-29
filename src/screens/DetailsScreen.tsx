@@ -4,6 +4,7 @@ import { Alert, Image, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
+import HourMinutesFormater from "../utils/dateformatting";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Details">;
 
@@ -80,15 +81,13 @@ export default function DetailsScreen({ route, navigation }: Props) {
             Dates and times
           </Text>
           <Text variant="bodyLarge">
-            Due date:{" "}
-            {todoData.dueDate.toLocaleString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            Due date: {HourMinutesFormater(todoData.dueDate)}{" "}
+            {todoData.dueDate.toDateString()}
           </Text>
           {todoData.alertTime ? (
             <Text variant="bodyLarge">
-              alert date: {todoData.alertTime.toTimeString()}
+              alert date: {HourMinutesFormater(todoData.alertTime)}{" "}
+              {todoData.alertTime.toDateString()}
             </Text>
           ) : (
             <Text variant="bodyLarge">No alert time set.</Text>
