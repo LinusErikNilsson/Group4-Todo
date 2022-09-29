@@ -48,8 +48,8 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
         alertTime: undefined,
         alertOnLocation: false,
         imageUri: undefined,
-        status: "pending",
-        priority: "medium",
+        status: "Pending",
+        priority: "Medium",
       };
 
   const schema = Yup.object().shape({
@@ -133,16 +133,16 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
               mode="contained"
               onPress={() => {
                 // eslint-disable-next-line no-unused-expressions
-                formik.values.priority === "low"
-                  ? formik.handleChange("priority")("medium")
-                  : formik.values.priority === "medium"
-                  ? formik.handleChange("priority")("high")
-                  : formik.handleChange("priority")("low");
+                formik.values.priority === "Low"
+                  ? formik.handleChange("priority")("Medium")
+                  : formik.values.priority === "Medium"
+                  ? formik.handleChange("priority")("High")
+                  : formik.handleChange("priority")("Low");
               }}
               buttonColor={
-                formik.values.priority === "low"
+                formik.values.priority === "Low"
                   ? "green"
-                  : formik.values.priority === "medium"
+                  : formik.values.priority === "Medium"
                   ? "orange"
                   : "red"
               }
