@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect } from "react";
 import { Alert, Image, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { RootStackParamList } from "../App";
@@ -9,6 +10,10 @@ type Props = NativeStackScreenProps<RootStackParamList, "Details">;
 export default function DetailsScreen({ route, navigation }: Props) {
   const { todoItems, updateTodo, removeTodo } = useTodo();
   const todoData = todoItems.find((t) => t.id === route.params.id);
+  useEffect(() => {
+    navigation.setOptions({ title: todoData?.title });
+  }, [navigation, todoData?.title]);
+
   if (todoData) {
     todoData.dueDate = new Date(todoData.dueDate);
     if (todoData.alertTime) {
