@@ -1,27 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-underscore-dangle */
-import * as Location from "expo-location";
 import registerRootComponent from "expo/build/launch/registerRootComponent";
 import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import App from "./App";
+import LocationTracking from "./components/LocationTracking";
 import TodoProvider from "./contexts/TodoContext";
-import { requestPermissions } from "./tasks/TodoLocationTask";
+import { notificationsSetup } from "./utils/notifications";
 
 function Main() {
-  Location.requestForegroundPermissionsAsync();
-  Location.requestBackgroundPermissionsAsync();
-  requestPermissions();
-
-  if (!Location.hasStartedLocationUpdatesAsync("background-location-task")) {
-    Location.startLocationUpdatesAsync("background-location-task", {
-      accuracy: Location.Accuracy.Balanced,
-    });
-  }
+  notificationsSetup();
 
   return (
     <PaperProvider>
       <TodoProvider>
+        <LocationTracking />
         <App />
       </TodoProvider>
     </PaperProvider>

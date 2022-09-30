@@ -4,7 +4,6 @@ import React from "react";
 import { Button, Image, StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
-import { PermissionsButton } from "../tasks/TodoLocationTask";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
@@ -13,7 +12,6 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <PermissionsButton />
       {todos.todoItems.map((todo) => (
         <View key={todo.id}>
           <Text key={todo.id}>{todo.title}</Text>
