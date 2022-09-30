@@ -19,6 +19,7 @@ import {
 } from "react-native-paper";
 import * as Yup from "yup";
 import { RootStackParamList } from "../App";
+import HourMinutesFormater from "../utils/dateformatting";
 import { LocationInfo, Todo, TodoFormValues } from "../utils/types";
 
 interface Props {
@@ -48,8 +49,8 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
         alertTime: undefined,
         alertOnLocation: false,
         imageUri: undefined,
-        status: "pending",
-        priority: "medium",
+        status: "Pending",
+        priority: "Medium",
       };
 
   const schema = Yup.object().shape({
@@ -63,14 +64,10 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
     dueDate: Yup.date().required("Due date is required"),
     alertTime: Yup.date(),
     alertOnLocation: Yup.boolean(),
-    imageUri: Yup.string().required("Picture is required"),
+    imageUri: Yup.string(),
     status: Yup.string().required("Status is required"),
     priority: Yup.string().required("Priority is required"),
   });
-
-  const addZero = (time: number) => {
-    return time < 10 ? `0${time}` : time;
-  };
 
   const dateTimePicker = (
     startValue: Date,
@@ -133,16 +130,16 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
               mode="contained"
               onPress={() => {
                 // eslint-disable-next-line no-unused-expressions
-                formik.values.priority === "low"
-                  ? formik.handleChange("priority")("medium")
-                  : formik.values.priority === "medium"
-                  ? formik.handleChange("priority")("high")
-                  : formik.handleChange("priority")("low");
+                formik.values.priority === "Low"
+                  ? formik.handleChange("priority")("Medium")
+                  : formik.values.priority === "Medium"
+                  ? formik.handleChange("priority")("High")
+                  : formik.handleChange("priority")("Low");
               }}
               buttonColor={
-                formik.values.priority === "low"
+                formik.values.priority === "Low"
                   ? "green"
-                  : formik.values.priority === "medium"
+                  : formik.values.priority === "Medium"
                   ? "orange"
                   : "red"
               }
@@ -188,9 +185,7 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
                 {new Date(formik.values.dueDate).toDateString()}
               </Text>
               <Text style={styles.smallText}>
-                {formik.values.dueDate.getHours() +
-                  ":" +
-                  formik.values.dueDate.getMinutes()}
+                {HourMinutesFormater(formik.values.dueDate)}
               </Text>
             </View>
             <Button
@@ -233,9 +228,7 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
                         : "None"}
                     </Text>
                     <Text style={styles.smallText}>
-                      {addZero(formik.values.alertTime.getHours()) +
-                        ":" +
-                        addZero(formik.values.alertTime.getMinutes())}
+                      {HourMinutesFormater(formik.values.alertTime)}
                     </Text>
                   </>
                 ) : (

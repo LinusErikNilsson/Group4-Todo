@@ -40,7 +40,16 @@ function TodoProvider({ children }: Props) {
     const readItemFromStorage = async () => {
       const result = await SecureStore.getItemAsync("TodoItems");
       if (result) {
-        setTodoItems(JSON.parse(result));
+        setTodoItems(
+          JSON.parse(result, (key, value) => {
+            const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+
+            if (typeof value === "string" && dateFormat.test(value)) {
+              return new Date(value);
+            }
+            return value;
+          })
+        );
       }
     };
     readItemFromStorage();

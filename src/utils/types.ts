@@ -15,8 +15,8 @@ interface Todo {
   dueDate: Date;
   alertOnLocation?: boolean;
   imageUri?: string;
-  status: "pending" | "completed";
-  priority: "low" | "medium" | "high";
+  status: "Pending" | "Completed";
+  priority: "Low" | "Medium" | "High";
 }
 
 type TodoFormValues = Omit<Todo, "id">;
