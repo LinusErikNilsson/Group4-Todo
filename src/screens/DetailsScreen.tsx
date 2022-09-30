@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import { Alert, Image, StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Button, IconButton, Text } from "react-native-paper";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
 import HourMinutesFormater from "../utils/dateformatting";
@@ -19,7 +19,22 @@ export default function DetailsScreen({ route, navigation }: Props) {
     return (
       <View style={styles.container}>
         <View style={styles.containerItemColumnAlignCenter}>
-          <Text variant="headlineLarge">{todoData.title}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text variant="headlineLarge">{todoData.title}</Text>
+            <IconButton
+              icon="pencil"
+              onPress={() =>
+                navigation.navigate("Edit", {
+                  id: todoData.id,
+                })
+              }
+            />
+          </View>
           <Text variant="bodyLarge">{todoData.priority} Priority</Text>
           {todoData.imageUri ? (
             <Image
