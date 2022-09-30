@@ -41,7 +41,6 @@ function EditScreen({ route, navigation }: Props) {
 
   return (
     <View>
-      <Text>Edit Screen</Text>
       <TodoForm
         onSubmit={handleSubmit}
         location={route.params?.location}

@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { RootStackParamList } from "../App";
 import TodoForm from "../components/TodoForm";
 import { useTodo } from "../contexts/TodoContext";
@@ -21,7 +21,6 @@ function CreateScreen({ navigation, route }: Props) {
 
   return (
     <View>
-      <Text>Create Screen</Text>
       <TodoForm
         onSubmit={handleSubmit}
         location={route.params.location}

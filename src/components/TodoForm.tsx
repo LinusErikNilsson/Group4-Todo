@@ -19,6 +19,7 @@ import {
 } from "react-native-paper";
 import * as Yup from "yup";
 import { RootStackParamList } from "../App";
+import HourMinutesFormater from "../utils/dateformatting";
 import { LocationInfo, Todo, TodoFormValues } from "../utils/types";
 
 interface Props {
@@ -67,10 +68,6 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
     status: Yup.string().required("Status is required"),
     priority: Yup.string().required("Priority is required"),
   });
-
-  const addZero = (time: number) => {
-    return time < 10 ? `0${time}` : time;
-  };
 
   const dateTimePicker = (
     startValue: Date,
@@ -188,9 +185,7 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
                 {new Date(formik.values.dueDate).toDateString()}
               </Text>
               <Text style={styles.smallText}>
-                {formik.values.dueDate.getHours() +
-                  ":" +
-                  formik.values.dueDate.getMinutes()}
+                {HourMinutesFormater(formik.values.dueDate)}
               </Text>
             </View>
             <Button
@@ -233,9 +228,7 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
                         : "None"}
                     </Text>
                     <Text style={styles.smallText}>
-                      {addZero(formik.values.alertTime.getHours()) +
-                        ":" +
-                        addZero(formik.values.alertTime.getMinutes())}
+                      {HourMinutesFormater(formik.values.alertTime)}
                     </Text>
                   </>
                 ) : (
