@@ -18,44 +18,42 @@ export default function HomeScreen({ navigation }: Props) {
   const todos = useTodo();
 
   return (
-    <SafeAreaProvider>
-      <ScrollView>
-        {todos.todoItems.map((todo) => (
-          <View key={todo.id}>
-            <Text key={todo.id}>{todo.title}</Text>
-            {todo.imageUri && (
-              <Image
-                style={{ width: 200, height: 200 }}
-                source={{ uri: todo.imageUri }}
-              />
-            )}
-            <Button
-              title="Edit"
-              onPress={() => navigation.navigate("Edit", { id: todo.id })}
+    <ScrollView>
+      {todos.todoItems.map((todo) => (
+        <View key={todo.id}>
+          <Text key={todo.id}>{todo.title}</Text>
+          {todo.imageUri && (
+            <Image
+              style={{ width: 200, height: 200 }}
+              source={{ uri: todo.imageUri }}
             />
-          </View>
-        ))}
-        <Text>Home Screen 🏠</Text>
-        <StatusBar style="auto" />
-        <Button
-          title="DetailsScreen"
-          onPress={() => navigation.navigate("Details", { id: 4 })}
-        />
-        <Button
-          title="CreateScreen"
-          onPress={() =>
-            navigation.navigate("Create", {
-              location: undefined,
-              picture: undefined,
-            })
-          }
-        />
-        <Button
-          title="HistoryScreen"
-          onPress={() => navigation.navigate("History")}
-        />
-      </ScrollView>
-    </SafeAreaProvider>
+          )}
+          <Button
+            title="Edit"
+            onPress={() => navigation.navigate("Edit", { id: todo.id })}
+          />
+        </View>
+      ))}
+      <Text>Home Screen 🏠</Text>
+      <StatusBar style="auto" />
+      <Button
+        title="DetailsScreen"
+        onPress={() => navigation.navigate("Details", { id: 4 })}
+      />
+      <Button
+        title="CreateScreen"
+        onPress={() =>
+          navigation.navigate("Create", {
+            location: undefined,
+            picture: undefined,
+          })
+        }
+      />
+      <Button
+        title="HistoryScreen"
+        onPress={() => navigation.navigate("History")}
+      />
+    </ScrollView>
   );
 }
 
