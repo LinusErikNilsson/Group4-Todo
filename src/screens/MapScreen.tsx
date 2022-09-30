@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
+import { LocationObject } from "expo-location";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { LatLng, Marker } from "react-native-maps";
@@ -11,6 +12,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Map">;
 export default function MapScreen({ navigation, route }: Props) {
   const [permission, setPermission] = useState(false);
   const { todoItems } = useTodo();
+  const [currentLocation, setCurrentLocation] = useState<LocationObject>();
 
   const getLocation = async (coordinates: LatLng) => {
     const { latitude, longitude } = coordinates;
@@ -32,6 +34,16 @@ export default function MapScreen({ navigation, route }: Props) {
       }
     };
     getPermission();
+  }, []);
+
+  useEffect(() => {
+    const getCurrentLocation = async () => {
+      const phoneLocation = await Location.getCurrentPositionAsync();
+      if (phoneLocation) {
+        setCurrentLocation(phoneLocation);
+      }
+    };
+    getCurrentLocation();
   }, []);
 
   if (
@@ -60,12 +72,21 @@ export default function MapScreen({ navigation, route }: Props) {
             );
           }
         }}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
+        region={
+          currentLocation
+            ? {
+                latitude: currentLocation.coords.latitude,
+                longitude: currentLocation.coords.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }
+            : {
+                latitude: 57.7103,
+                longitude: 12.9424,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }
+        }
       >
         {todoItems.map((todo) =>
           todo.coordinates ? (
