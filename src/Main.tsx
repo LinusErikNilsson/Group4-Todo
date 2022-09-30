@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-underscore-dangle */
-import * as Location from "expo-location";
 import registerRootComponent from "expo/build/launch/registerRootComponent";
 import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
-import TodoProvider from "./contexts/TodoContext";
 import App from "./App";
+import LocationTracking from "./components/LocationTracking";
+import TodoProvider from "./contexts/TodoContext";
+import { notificationsSetup } from "./utils/notifications";
 
 function Main() {
-  Location.requestForegroundPermissionsAsync();
-  Location.requestBackgroundPermissionsAsync();
+  notificationsSetup();
 
   return (
     <PaperProvider>
       <TodoProvider>
+        <LocationTracking />
         <App />
       </TodoProvider>
     </PaperProvider>

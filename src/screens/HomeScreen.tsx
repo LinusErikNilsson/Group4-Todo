@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
+import React from "react";
 import { Button, Image, StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
