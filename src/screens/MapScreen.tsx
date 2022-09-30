@@ -2,13 +2,15 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import MapView, { LatLng } from "react-native-maps";
+import MapView, { LatLng, Marker } from "react-native-maps";
 import { RootStackParamList } from "../App";
+import { useTodo } from "../contexts/TodoContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Map">;
 
 export default function MapScreen({ navigation, route }: Props) {
   const [permission, setPermission] = useState(false);
+  const { todoItems } = useTodo();
 
   const getLocation = async (coordinates: LatLng) => {
     const { latitude, longitude } = coordinates;
@@ -49,12 +51,14 @@ export default function MapScreen({ navigation, route }: Props) {
       <MapView
         style={styles.map}
         onDoublePress={async (e) => {
-          navigation.navigate(
-            route.params.returnPath === "Edit" ? "Edit" : "Create",
-            {
-              location: await getLocation(e.nativeEvent.coordinate),
-            }
-          );
+          if (route.params.returnPath !== "Home") {
+            navigation.navigate(
+              route.params.returnPath === "Edit" ? "Edit" : "Create",
+              {
+                location: await getLocation(e.nativeEvent.coordinate),
+              }
+            );
+          }
         }}
         initialRegion={{
           latitude: 37.78825,
@@ -62,7 +66,18 @@ export default function MapScreen({ navigation, route }: Props) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-      />
+      >
+        {todoItems.map((todo) =>
+          todo.coordinates ? (
+            <Marker
+              key={todo.id}
+              coordinate={todo.coordinates}
+              title={todo.title}
+              description={todo.description}
+            />
+          ) : null
+        )}
+      </MapView>
     </View>
   );
 }

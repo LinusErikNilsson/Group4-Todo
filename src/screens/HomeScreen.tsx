@@ -33,6 +33,10 @@ export default function HomeScreen({ navigation }: Props) {
         onPress={() => navigation.navigate("Details", { id: 4 })}
       />
       <Button
+        title="Map"
+        onPress={() => navigation.navigate("Map", { returnPath: "Home" })}
+      />
+      <Button
         title="CreateScreen"
         onPress={() =>
           navigation.navigate("Create", {
