@@ -58,6 +58,14 @@ export default function MapScreen({ navigation, route }: Props) {
     );
   }
 
+  if (!currentLocation) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <MapView
@@ -72,21 +80,12 @@ export default function MapScreen({ navigation, route }: Props) {
             );
           }
         }}
-        region={
-          currentLocation
-            ? {
-                latitude: currentLocation.coords.latitude,
-                longitude: currentLocation.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }
-            : {
-                latitude: 57.7103,
-                longitude: 12.9424,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }
-        }
+        initialRegion={{
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
       >
         {todoItems.map((todo) =>
           todo.coordinates ? (
