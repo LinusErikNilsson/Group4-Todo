@@ -6,7 +6,6 @@ import { Text } from "react-native-paper";
 import { RootStackParamList } from "../App";
 import TodoPreview from "../components/TodoPreview";
 import { useTodo } from "../contexts/TodoContext";
-import TodoPreview from "../components/TodoPreview";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
