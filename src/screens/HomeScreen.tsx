@@ -33,7 +33,7 @@ export default function HomeScreen({ navigation }: Props) {
           ))}
       </View>
       <View>
-        <Text variant="headlineSmall">Upcomming todo:</Text>
+        <Text variant="headlineSmall">Upcoming todo:</Text>
       </View>
       <View style={styles.container}>
         {todos.todoItems
