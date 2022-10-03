@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, Image, Pressable, StyleSheet, View } from "react-native";
 import { Chip, Divider, Text } from "react-native-paper";
 import { useTodo } from "../contexts/TodoContext";
+import HourMinutesFormater, { isToday } from "../utils/dateformatting";
 import { Todo } from "../utils/types";
 
 interface Props {
@@ -107,7 +108,9 @@ function TodoPreview({ todo, bottomDivider, navToDetails }: Props) {
               }}
               ellipsizeMode="tail"
             >
-              {todo.dueDate.toDateString()}
+              {isToday(todo.dueDate)
+                ? HourMinutesFormater(todo.dueDate)
+                : todo.dueDate.toDateString()}
             </Text>
 
             <Text

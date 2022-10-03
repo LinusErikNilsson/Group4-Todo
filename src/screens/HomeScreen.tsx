@@ -77,31 +77,33 @@ export default function HomeScreen({ navigation }: Props) {
     );
   }
 
+  console.log(overDue, today, upcoming);
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.section}>
           {overDue.length === 0 ? null : (
-            <>
+            <View>
               <Text style={styles.headerText}>Overdue</Text>
               {overDue}
-            </>
+            </View>
           )}
         </View>
         <View style={styles.section}>
-          {overDue.length === 0 ? null : (
-            <>
+          {today.length === 0 ? null : (
+            <View>
               <Text style={styles.headerText}>Today</Text>
               {today}
-            </>
+            </View>
           )}
         </View>
         <View style={styles.section}>
-          {overDue.length === 0 ? null : (
-            <>
+          {upcoming.length === 0 ? null : (
+            <View>
               <Text style={styles.headerText}>Upcomning</Text>
               {upcoming}
-            </>
+            </View>
           )}
         </View>
         <Button
