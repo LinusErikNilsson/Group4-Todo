@@ -1,16 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import {
-  Button,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import React from "react";
+import { Button, ScrollView, StyleSheet, View, Text } from "react-native";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
+import TodoPreview from "../components/TodoPreview";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
@@ -19,22 +13,44 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <ScrollView>
-      {todos.todoItems.map((todo) => (
-        <View key={todo.id}>
-          <Text key={todo.id}>{todo.title}</Text>
-          {todo.imageUri && (
-            <Image
-              style={{ width: 200, height: 200 }}
-              source={{ uri: todo.imageUri }}
+      <View>
+        <Text> Overdue tasks</Text>
+      </View>
+      <View style={styles.container}>
+        {todos.todoItems
+          .filter((todo) => todo.dueDate < new Date())
+          .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
+          .map((todo, idx, arr) => (
+            <TodoPreview
+              key={todo.id}
+              todo={todo}
+              bottomDivider={idx !== arr.length - 1}
+              navToDetails={() =>
+                navigation.navigate("Details", { id: todo.id })
+              }
             />
-          )}
-          <Button
-            title="Edit"
-            onPress={() => navigation.navigate("Edit", { id: todo.id })}
-          />
-        </View>
-      ))}
-      <Text>Home Screen 🏠</Text>
+          ))}
+      </View>
+      <View>
+        <Text>Todo list</Text>
+      </View>
+      <View style={styles.container}>
+        {todos.todoItems
+          .filter(
+            (todo) => todo.dueDate > new Date() && todo.status === "Pending"
+          )
+          .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
+          .map((todo, idx, arr) => (
+            <TodoPreview
+              key={todo.id}
+              todo={todo}
+              bottomDivider={idx !== arr.length - 1}
+              navToDetails={() =>
+                navigation.navigate("Details", { id: todo.id })
+              }
+            />
+          ))}
+      </View>
       <StatusBar style="auto" />
       <Button
         title="DetailsScreen"
