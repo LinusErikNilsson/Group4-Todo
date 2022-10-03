@@ -1,18 +1,33 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { RootStackParamList } from "../App";
+import TodoPreview from "../components/TodoPreview";
+import { useTodo } from "../contexts/TodoContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "History">;
 
 export default function HistoryScreen({ navigation }: Props) {
+  const todos = useTodo();
+
   return (
-    <View style={styles.container}>
-      <Text> History Screen 📖</Text>
-      <StatusBar style="auto" />
-      <Button title="Gå tillbaka" onPress={() => navigation.goBack()} />
-      <Button title="Gå hem" onPress={() => navigation.navigate("Home")} />
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {todos.todoItems
+          .filter((todo) => todo.status === "Completed")
+          .sort((a, b) => b.dueDate.getTime() - a.dueDate.getTime())
+          .map((todo, idx, arr) => (
+            <TodoPreview
+              key={todo.id}
+              todo={todo}
+              bottomDivider={idx !== arr.length - 1}
+              navToDetails={() =>
+                navigation.navigate("Details", { id: todo.id })
+              }
+            />
+          ))}
+      </View>
+    </ScrollView>
   );
 }
 
@@ -21,6 +36,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    paddingTop: 20,
+    padding: 10,
+    paddingBottom: 20,
   },
 });
