@@ -77,8 +77,6 @@ export default function HomeScreen({ navigation }: Props) {
     );
   }
 
-  console.log(overDue, today, upcoming);
-
   return (
     <ScrollView>
       <View style={styles.container}>
