@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, Image, Pressable, StyleSheet, View } from "react-native";
 import { Chip, Divider, Text } from "react-native-paper";
 import { useTodo } from "../contexts/TodoContext";
+import HourMinutesFormater, { isToday } from "../utils/dateformatting";
 import { Todo } from "../utils/types";
 
 interface Props {
@@ -12,8 +13,6 @@ interface Props {
 
 function TodoPreview({ todo, bottomDivider, navToDetails }: Props) {
   const { updateTodo } = useTodo();
-
-  const today = new Date();
 
   const toggleTodo = () => {
     Alert.alert(
@@ -74,7 +73,7 @@ function TodoPreview({ todo, bottomDivider, navToDetails }: Props) {
                 backgroundColor:
                   todo.status === "Completed"
                     ? "#85fc8f"
-                    : todo.dueDate < today
+                    : todo.dueDate < new Date()
                     ? "#fc9585"
                     : "#fcfc85",
                 marginLeft: "auto",
@@ -87,7 +86,7 @@ function TodoPreview({ todo, bottomDivider, navToDetails }: Props) {
               <Text>
                 {todo.status === "Completed"
                   ? todo.status
-                  : todo.dueDate.getTime() > today.getTime()
+                  : todo.dueDate.getTime() > new Date().getTime()
                   ? todo.status
                   : "Overdue"}
               </Text>
@@ -109,7 +108,9 @@ function TodoPreview({ todo, bottomDivider, navToDetails }: Props) {
               }}
               ellipsizeMode="tail"
             >
-              {todo.dueDate.toDateString()}
+              {isToday(todo.dueDate)
+                ? HourMinutesFormater(todo.dueDate)
+                : todo.dueDate.toDateString()}
             </Text>
 
             <Text

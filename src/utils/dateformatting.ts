@@ -4,4 +4,13 @@ function HourMinutesFormater(date: Date) {
   return `${currentHours}:${currentMinutes}`;
 }
 
+export function isToday(date: Date) {
+  const today = new Date();
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+}
+
 export default HourMinutesFormater;
