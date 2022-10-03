@@ -19,7 +19,9 @@ export default function HomeScreen({ navigation }: Props) {
       </View>
       <View style={styles.container}>
         {todos.todoItems
-          .filter((todo) => todo.dueDate < new Date())
+          .filter(
+            (todo) => todo.dueDate < new Date() && todo.status === "Pending"
+          )
           .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
           .map((todo, idx, arr) => (
             <TodoPreview
