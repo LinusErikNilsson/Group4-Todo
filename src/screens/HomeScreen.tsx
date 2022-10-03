@@ -15,7 +15,7 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <ScrollView>
       <View>
-        <Text variant="headlineSmall"> Overdue tasks</Text>
+        <Text variant="headlineSmall"> Overdue todo:</Text>
       </View>
       <View style={styles.container}>
         {todos.todoItems
@@ -33,7 +33,7 @@ export default function HomeScreen({ navigation }: Props) {
           ))}
       </View>
       <View>
-        <Text variant="headlineSmall">Todo list</Text>
+        <Text variant="headlineSmall">Upcomming todo:</Text>
       </View>
       <View style={styles.container}>
         {todos.todoItems
