@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { Button, ScrollView, StyleSheet, View, Text } from "react-native";
+import { Button, ScrollView, StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
 import TodoPreview from "../components/TodoPreview";
@@ -14,7 +15,7 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <ScrollView>
       <View>
-        <Text> Overdue tasks</Text>
+        <Text variant="headlineSmall"> Overdue tasks</Text>
       </View>
       <View style={styles.container}>
         {todos.todoItems
@@ -32,7 +33,7 @@ export default function HomeScreen({ navigation }: Props) {
           ))}
       </View>
       <View>
-        <Text>Todo list</Text>
+        <Text variant="headlineSmall">Todo list</Text>
       </View>
       <View style={styles.container}>
         {todos.todoItems
