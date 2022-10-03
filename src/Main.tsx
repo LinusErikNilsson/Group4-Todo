@@ -1,3 +1,4 @@
+import { StatusBar } from "expo-status-bar";
 import registerRootComponent from "expo/build/launch/registerRootComponent";
 import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -12,6 +13,7 @@ function Main() {
   return (
     <PaperProvider>
       <TodoProvider>
+        <StatusBar style="auto" />
         <LocationTracking />
         <App />
       </TodoProvider>

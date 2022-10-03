@@ -13,8 +13,6 @@ interface Props {
 function TodoPreview({ todo, bottomDivider, navToDetails }: Props) {
   const { updateTodo } = useTodo();
 
-  const today = new Date();
-
   const toggleTodo = () => {
     Alert.alert(
       "Set Status",
@@ -74,7 +72,7 @@ function TodoPreview({ todo, bottomDivider, navToDetails }: Props) {
                 backgroundColor:
                   todo.status === "Completed"
                     ? "#85fc8f"
-                    : todo.dueDate < today
+                    : todo.dueDate < new Date()
                     ? "#fc9585"
                     : "#fcfc85",
                 marginLeft: "auto",
@@ -87,7 +85,7 @@ function TodoPreview({ todo, bottomDivider, navToDetails }: Props) {
               <Text>
                 {todo.status === "Completed"
                   ? todo.status
-                  : todo.dueDate.getTime() > today.getTime()
+                  : todo.dueDate.getTime() > new Date().getTime()
                   ? todo.status
                   : "Overdue"}
               </Text>
