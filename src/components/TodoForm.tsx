@@ -104,18 +104,23 @@ function TodoForm({ onSubmit, todo, location, picture, returnPath }: Props) {
 
   useEffect(() => {
     if (location) {
-      formik.setFieldValue("coordinates", location.coordinates);
-      formik.setFieldValue("location", location.location);
+      if (formik.values.coordinates !== location.coordinates) {
+        formik.setFieldValue("coordinates", location.coordinates);
+      }
+
+      if (formik.values.location !== location.location) {
+        formik.setFieldValue("location", location.location);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [location, formik]);
 
   useEffect(() => {
     if (picture) {
-      formik.setFieldValue("imageUri", picture);
+      if (formik.values.imageUri !== picture) {
+        formik.setFieldValue("imageUri", picture);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [picture]);
+  }, [picture, formik]);
 
   return (
     <ScrollView>
