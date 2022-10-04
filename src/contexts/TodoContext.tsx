@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import data from "../utils/mockdata";
 import { Todo } from "../utils/types";
 
@@ -38,7 +38,7 @@ function TodoProvider({ children }: Props) {
 
   useEffect(() => {
     const readItemFromStorage = async () => {
-      const result = await SecureStore.getItemAsync("TodoItems");
+      const result = await AsyncStorage.getItem("TodoItems");
       if (result) {
         setTodoItems(
           JSON.parse(result, (key, value) => {
@@ -57,23 +57,13 @@ function TodoProvider({ children }: Props) {
 
   useEffect(() => {
     const writeItemToStorage = async (newValue: Todo[]) => {
-      await SecureStore.setItemAsync("TodoItems", JSON.stringify(newValue));
+      await AsyncStorage.setItem("TodoItems", JSON.stringify(newValue));
     };
     writeItemToStorage(todoItems);
   }, [todoItems]);
 
-  /* const generateTodoItemId = (): number => {
-    const id = Math.max(...todoItems.map((item) => item.id), 0) + 1;
-    return id;
-  }; */
-
   const addTodo = (todo: Todo) => {
     const newTodoItems = [...todoItems];
-    /* Change this when we get data from formik
-    const newTodoItem = {
-      ...todo,
-      id: generateTodoItemId(),
-    }; */
     newTodoItems.push(todo);
     setTodoItems(newTodoItems);
   };
