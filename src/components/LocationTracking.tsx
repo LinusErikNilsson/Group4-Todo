@@ -16,7 +16,10 @@ export default function LocationTracking() {
         accuracy: Location.Accuracy.Highest,
       });
 
-      console.log(location);
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log(location);
+      }
 
       const currentLocation = {
         latitude: location.coords.latitude,

@@ -4,6 +4,7 @@ import { LocationObject } from "expo-location";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { LatLng, Marker } from "react-native-maps";
+import { Button } from "react-native-paper";
 import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
 
@@ -13,16 +14,34 @@ export default function MapScreen({ navigation, route }: Props) {
   const [permission, setPermission] = useState(false);
   const { todoItems } = useTodo();
   const [currentLocation, setCurrentLocation] = useState<LocationObject>();
+  const [loadingGetLocation, setLoadingGetLocation] = useState(false);
 
   const getLocation = async (coordinates: LatLng) => {
     const { latitude, longitude } = coordinates;
+    setLoadingGetLocation(true);
     const location = await Location.reverseGeocodeAsync({
       latitude,
       longitude,
     });
+
+    setLoadingGetLocation(false);
+
+    if (location.length > 0) {
+      const { name, street, region, postalCode } = location[0];
+
+      const locationString = `${street || "unknown"} ${name || ""}, ${
+        region || ""
+      }, ${postalCode || ""}`;
+
+      return {
+        coordinates,
+        location: locationString,
+      };
+    }
+
     return {
       coordinates,
-      location: location[0].street ? location[0].street : "Unknown",
+      location: "Unknown",
     };
   };
 
@@ -62,6 +81,20 @@ export default function MapScreen({ navigation, route }: Props) {
     return (
       <View>
         <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (loadingGetLocation) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Button loading>Loading</Button>
       </View>
     );
   }
