@@ -100,7 +100,7 @@ export default function DetailsScreen({ route, navigation }: Props) {
               }}
               style={{ width: "48%" }}
             >
-             {todoData.status}
+              {todoData.status}
             </Button>
             <Button
               mode="contained"
