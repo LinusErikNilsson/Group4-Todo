@@ -77,7 +77,7 @@ export default function CameraScreen({ navigation, route }: Props) {
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <Image style={styles.camera} source={{ uri: photo.uri }} />
         <View style={styles.camera}>
           <View style={styles.buttonContainer}>
@@ -89,7 +89,7 @@ export default function CameraScreen({ navigation, route }: Props) {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
