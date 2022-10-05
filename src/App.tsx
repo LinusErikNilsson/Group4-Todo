@@ -39,7 +39,9 @@ export default function App() {
         <NativeStack.Screen
           name="Create"
           component={CreateScreen}
-          options={{ title: "Create" }}
+          options={{
+            title: "Create",
+          }}
         />
         <NativeStack.Screen
           name="Edit"
@@ -55,6 +57,7 @@ export default function App() {
           name="Map"
           component={MapScreen}
           options={{ title: "Map" }}
+          initialParams={{ returnPath: "Home" }}
         />
         <NativeStack.Screen
           name="Camera"
