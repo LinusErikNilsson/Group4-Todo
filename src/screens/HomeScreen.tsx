@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Button, ScrollView, StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Button, FAB, Text } from "react-native-paper";
 import { RootStackParamList } from "../App";
 import TodoPreview from "../components/TodoPreview";
 import { useTodo } from "../contexts/TodoContext";
@@ -65,64 +65,92 @@ export default function HomeScreen({ navigation }: Props) {
       <View style={styles.container}>
         <Text style={styles.headerText}>No todos to show</Text>
         <Button
-          title="Add Todo"
           onPress={() =>
             navigation.navigate("Create", {
               location: undefined,
               picture: undefined,
             })
           }
-        />
+        >
+          Add Todo
+        </Button>
       </View>
     );
   }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.section}>
-          {overDue.length === 0 ? null : (
-            <View>
-              <Text style={styles.headerText}>Overdue</Text>
-              {overDue}
-            </View>
-          )}
+    <View>
+      <ScrollView>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: 10,
+            backgroundColor: "#fff",
+          }}
+        >
+          <Button
+            onPress={() => navigation.navigate("History")}
+            mode="outlined"
+            style={{ flex: 1, marginEnd: 10 }}
+          >
+            Todo History
+          </Button>
+          <Button
+            onPress={() =>
+              navigation.navigate("Map", {
+                returnPath: "Home",
+              })
+            }
+            mode="outlined"
+            style={{ flex: 1, marginStart: 10 }}
+          >
+            Todo Locations
+          </Button>
         </View>
-        <View style={styles.section}>
-          {today.length === 0 ? null : (
-            <View>
-              <Text style={styles.headerText}>Today</Text>
-              {today}
-            </View>
-          )}
+        <View style={styles.container}>
+          <View style={styles.section}>
+            {overDue.length === 0 ? null : (
+              <View>
+                <Text style={styles.headerText}>Overdue</Text>
+                {overDue}
+              </View>
+            )}
+          </View>
+          <View style={styles.section}>
+            {today.length === 0 ? null : (
+              <View>
+                <Text style={styles.headerText}>Today</Text>
+                {today}
+              </View>
+            )}
+          </View>
+          <View style={styles.section}>
+            {upcoming.length === 0 ? null : (
+              <View>
+                <Text style={styles.headerText}>Upcomning</Text>
+                {upcoming}
+              </View>
+            )}
+          </View>
         </View>
-        <View style={styles.section}>
-          {upcoming.length === 0 ? null : (
-            <View>
-              <Text style={styles.headerText}>Upcomning</Text>
-              {upcoming}
-            </View>
-          )}
-        </View>
-        <Button
-          title="DetailsScreen"
-          onPress={() => navigation.navigate("Details", { id: 4 })}
-        />
-        <Button
-          title="CreateScreen"
-          onPress={() =>
-            navigation.navigate("Create", {
-              location: undefined,
-              picture: undefined,
-            })
-          }
-        />
-        <Button
-          title="HistoryScreen"
-          onPress={() => navigation.navigate("History")}
-        />
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <FAB
+        style={{
+          position: "absolute",
+          margin: 16,
+          right: 0,
+          bottom: 0,
+        }}
+        onPress={() =>
+          navigation.navigate("Create", {
+            location: undefined,
+            picture: undefined,
+          })
+        }
+        icon="plus"
+      />
+    </View>
   );
 }
 
@@ -133,6 +161,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 10,
+    paddingBottom: 100,
   },
   headerText: {
     fontSize: 20,
