@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../Navigation/RootStackNavigator";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Camera">;
 
@@ -77,7 +77,7 @@ export default function CameraScreen({ navigation, route }: Props) {
     };
 
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <Image style={styles.camera} source={{ uri: photo.uri }} />
         <View style={styles.camera}>
           <View style={styles.buttonContainer}>
@@ -89,7 +89,7 @@ export default function CameraScreen({ navigation, route }: Props) {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 

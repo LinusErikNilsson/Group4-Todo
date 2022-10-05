@@ -1,13 +1,12 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import { LocationObject } from "expo-location";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { LatLng, Marker } from "react-native-maps";
-import { RootStackParamList } from "../App";
 import { useTodo } from "../contexts/TodoContext";
+import { TabScreenProps } from "../navigation/TabNavigator";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Map">;
+type Props = TabScreenProps<"MapTab">;
 
 export default function MapScreen({ navigation, route }: Props) {
   const [permission, setPermission] = useState(false);

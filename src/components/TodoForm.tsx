@@ -18,7 +18,7 @@ import {
   TextInput,
 } from "react-native-paper";
 import * as Yup from "yup";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../Navigation/RootStackNavigator";
 import HourMinutesFormater from "../utils/dateformatting";
 import { LocationInfo, Todo, TodoFormValues } from "../utils/types";
 

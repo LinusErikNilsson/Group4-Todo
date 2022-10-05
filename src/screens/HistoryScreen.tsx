@@ -1,11 +1,10 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { RootStackParamList } from "../App";
 import TodoPreview from "../components/TodoPreview";
 import { useTodo } from "../contexts/TodoContext";
+import { TabScreenProps } from "../navigation/TabNavigator";
 
-type Props = NativeStackScreenProps<RootStackParamList, "History">;
+type Props = TabScreenProps<"HistoryTab">;
 
 export default function HistoryScreen({ navigation }: Props) {
   const todos = useTodo();

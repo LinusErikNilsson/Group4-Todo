@@ -9,13 +9,18 @@ import {
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
+import CreateScreen from "../screens/CreateScreen";
+import HistoryScreen from "../screens/HistoryScreen";
 import MapScreen from "../screens/MapScreen";
+import { LocationInfo } from "../utils/types";
 import HomeStackNavigator, { HomeStackParamList } from "./HomeStackNavigator";
 import { RootStackParamList } from "./RootStackNavigator";
 
 export type TabParamList = {
   HomeTab: NavigatorScreenParams<HomeStackParamList>;
-  MapTab: undefined;
+  CreateTab: { location?: LocationInfo; picture?: string };
+  HistoryTab: undefined;
+  MapTab: { returnPath: string };
 };
 
 /** Use this to easily define screen props */
@@ -43,13 +48,39 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen
+        name="CreateTab"
+        component={CreateScreen}
+        initialParams={{ location: undefined, picture: undefined }}
+        options={{
+          title: "Create",
+          headerShown: false,
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="MapTab"
         component={MapScreen}
+        initialParams={{ returnPath: "Home" }}
         options={{
           title: "Map",
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="person" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="HistoryTab"
+        component={HistoryScreen}
+        options={{
+          title: "History",
+          headerShown: false,
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home" size={size} color={color} />
           ),
         }}
       />

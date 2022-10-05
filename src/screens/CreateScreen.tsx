@@ -1,12 +1,11 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { View } from "react-native";
-import { RootStackParamList } from "../App";
 import TodoForm from "../components/TodoForm";
 import { useTodo } from "../contexts/TodoContext";
+import { TabScreenProps } from "../navigation/TabNavigator";
 import { TodoFormValues } from "../utils/types";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Create">;
+type Props = TabScreenProps<"CreateTab">;
 
 function CreateScreen({ navigation, route }: Props) {
   const { addTodo } = useTodo();

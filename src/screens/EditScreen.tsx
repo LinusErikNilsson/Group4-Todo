@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../Navigation/RootStackNavigator";
 import TodoForm from "../components/TodoForm";
 import { useTodo } from "../contexts/TodoContext";
 import { TodoFormValues } from "../utils/types";

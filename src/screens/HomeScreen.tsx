@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { Button, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../navigation/RootStackNavigator";
 import TodoPreview from "../components/TodoPreview";
 import { useTodo } from "../contexts/TodoContext";
 
@@ -55,23 +55,6 @@ export default function HomeScreen({ navigation }: Props) {
           ))}
       </View>
       <StatusBar style="auto" />
-      <Button
-        title="DetailsScreen"
-        onPress={() => navigation.navigate("Details", { id: 4 })}
-      />
-      <Button
-        title="CreateScreen"
-        onPress={() =>
-          navigation.navigate("Create", {
-            location: undefined,
-            picture: undefined,
-          })
-        }
-      />
-      <Button
-        title="HistoryScreen"
-        onPress={() => navigation.navigate("History")}
-      />
     </ScrollView>
   );
 }

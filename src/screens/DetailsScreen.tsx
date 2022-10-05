@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import { Alert, Image, StyleSheet, View } from "react-native";
 import { Button, IconButton, Text } from "react-native-paper";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../Navigation/RootStackNavigator";
 import { useTodo } from "../contexts/TodoContext";
 import HourMinutesFormater from "../utils/dateformatting";
 
