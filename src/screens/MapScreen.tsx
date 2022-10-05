@@ -120,16 +120,18 @@ export default function MapScreen({ navigation, route }: Props) {
           longitudeDelta: 0.0421,
         }}
       >
-        {todoItems.map((todo) =>
-          todo.coordinates ? (
-            <Marker
-              key={todo.id}
-              coordinate={todo.coordinates}
-              title={todo.title}
-              description={todo.description}
-            />
-          ) : null
-        )}
+        {todoItems
+          .filter((t) => t.status === "Pending")
+          .map((todo) =>
+            todo.coordinates ? (
+              <Marker
+                key={todo.id}
+                coordinate={todo.coordinates}
+                title={todo.title}
+                description={todo.description}
+              />
+            ) : null
+          )}
       </MapView>
     </View>
   );
