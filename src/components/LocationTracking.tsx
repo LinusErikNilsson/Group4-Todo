@@ -49,6 +49,30 @@ export default function LocationTracking() {
     }
   }, [todos]);
 
+  const notifyOnTime = useCallback(() => {
+    const items = todos.todoItems;
+
+    if (items) {
+      const filteredItems = items.filter((item) => {
+        if (item.alertTime && item.status === "Pending") {
+          const now = new Date();
+          const alertTime = new Date(item.alertTime);
+          return now.getTime() > alertTime.getTime();
+        }
+        return false;
+      });
+
+      filteredItems.forEach((item) => {
+        todos.updateTodo({
+          ...item,
+          alertTime: undefined,
+        });
+
+        schedulePushNotification(item.title, item.description);
+      });
+    }
+  }, [todos]);
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -57,6 +81,7 @@ export default function LocationTracking() {
       if (granted) {
         interval = setInterval(() => {
           NotifyIfNearTodo();
+          notifyOnTime();
         }, 5000);
       }
     })();
@@ -64,7 +89,7 @@ export default function LocationTracking() {
     return () => {
       clearInterval(interval);
     };
-  }, [NotifyIfNearTodo]);
+  }, [NotifyIfNearTodo, notifyOnTime]);
 
   return <View />;
 }

@@ -79,7 +79,12 @@ export default function HomeScreen({ navigation }: Props) {
   }
 
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+      }}
+    >
       <ScrollView>
         <View
           style={{
