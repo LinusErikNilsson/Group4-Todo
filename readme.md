@@ -1,5 +1,7 @@
 # Todo App
 
+Link to Repo: https://github.com/LinusErikNilsson/Group4-Todo
+
 ## Description
 
 This is a simple todo app with GPS tracking to remind you of your tasks when you are near a selected location.
@@ -38,10 +40,11 @@ Krav för godkänt:
 
     - Expo-Location
     - Expo-Notifications
-    - Expo-Secure-Store
+    - Expo-Async
     - Expo-Image-Picker
     - Expo-Camera
     - Expo-MediaLibrary
+    - Expo-StatusBar
 
       Other components and packages:
 
