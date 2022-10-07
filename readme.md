@@ -40,7 +40,6 @@ Krav för godkänt:
 
     - Expo-Location
     - Expo-Notifications
-    - Expo-Async
     - Expo-Image-Picker
     - Expo-Camera
     - Expo-MediaLibrary
