@@ -7,6 +7,8 @@ Link to Repo: https://github.com/LinusErikNilsson/Group4-Todo
 This is a simple todo app with GPS tracking to remind you of your tasks when you are near a selected location.
 The application is created in React Native.
 
+Please note: This application is only tested in Android (API level 29).
+
 ## Installation
 
 1. Clone the repository
