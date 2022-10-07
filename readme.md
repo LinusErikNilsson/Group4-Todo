@@ -44,6 +44,7 @@ Krav för godkänt:
     - Expo-MediaLibrary
 
       Other components and packages:
+
     - Yup
     - Formik
     - ES-lint
